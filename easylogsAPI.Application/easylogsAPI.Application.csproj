@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\easylogsAPI.Domain\easylogsAPI.Domain.csproj" />
+      <ProjectReference Include="..\easylogsAPI.Dto\easylogsAPI.Dto.csproj" />
+      <ProjectReference Include="..\easylogsAPI.Mapping\easylogsAPI.Mapping.csproj" />
+      <ProjectReference Include="..\easylogsAPI.Models\easylogsAPI.Models.csproj" />
+      <ProjectReference Include="..\easylogsAPI.Shared\easylogsAPI.Shared.csproj" />
+    </ItemGroup>
+
+</Project>

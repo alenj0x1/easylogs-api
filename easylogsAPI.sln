@@ -4,6 +4,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "easylogsAPI.WebApi", "easyl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "easylogsAPI.Domain", "easylogsAPI.Domain\easylogsAPI.Domain.csproj", "{27A3B277-6DC6-4BE9-B153-6CF316189EFA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "easylogsAPI.Application", "easylogsAPI.Application\easylogsAPI.Application.csproj", "{15D735D8-002A-45F8-825F-9EB5614054C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "easylogsAPI.Dto", "easylogsAPI.Dto\easylogsAPI.Dto.csproj", "{BF58D3A4-83FB-4EA3-9159-F7931A3B1B6A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "easylogsAPI.Models", "easylogsAPI.Models\easylogsAPI.Models.csproj", "{8BE02014-7656-479C-82BB-749097EC2589}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "easylogsAPI.Shared", "easylogsAPI.Shared\easylogsAPI.Shared.csproj", "{22BC3A7F-78C2-42E6-BD24-B4E3D5A1EF9A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "easylogsAPI.Mapping", "easylogsAPI.Mapping\easylogsAPI.Mapping.csproj", "{EB887150-943E-4A8E-95E6-F05A4C1046FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +28,25 @@ Global
 		{27A3B277-6DC6-4BE9-B153-6CF316189EFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27A3B277-6DC6-4BE9-B153-6CF316189EFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27A3B277-6DC6-4BE9-B153-6CF316189EFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15D735D8-002A-45F8-825F-9EB5614054C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15D735D8-002A-45F8-825F-9EB5614054C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15D735D8-002A-45F8-825F-9EB5614054C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15D735D8-002A-45F8-825F-9EB5614054C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF58D3A4-83FB-4EA3-9159-F7931A3B1B6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF58D3A4-83FB-4EA3-9159-F7931A3B1B6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF58D3A4-83FB-4EA3-9159-F7931A3B1B6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF58D3A4-83FB-4EA3-9159-F7931A3B1B6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BE02014-7656-479C-82BB-749097EC2589}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BE02014-7656-479C-82BB-749097EC2589}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BE02014-7656-479C-82BB-749097EC2589}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BE02014-7656-479C-82BB-749097EC2589}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22BC3A7F-78C2-42E6-BD24-B4E3D5A1EF9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22BC3A7F-78C2-42E6-BD24-B4E3D5A1EF9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22BC3A7F-78C2-42E6-BD24-B4E3D5A1EF9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22BC3A7F-78C2-42E6-BD24-B4E3D5A1EF9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB887150-943E-4A8E-95E6-F05A4C1046FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB887150-943E-4A8E-95E6-F05A4C1046FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB887150-943E-4A8E-95E6-F05A4C1046FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB887150-943E-4A8E-95E6-F05A4C1046FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
