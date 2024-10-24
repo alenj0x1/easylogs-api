@@ -1,25 +1,28 @@
-﻿using easylogsAPI.Domain.Context;
+﻿using System.Reflection;
+using easylogsAPI.Domain.Context;
 using easylogsAPI.Domain.Entities;
 using easylogsAPI.Domain.Interfaces.Repositories;
+using Microsoft.Extensions.Logging;
 
 namespace easylogsAPI.Domain.Repositories;
 
-public class UserRepository(EasylogsDbContext easylogsDbContext) : IUserRepository
+public class UserRepository(EasylogsDbContext easylogsDbContext, ILogger<IAppRepository> logger) : IUserRepository
 {
-    private readonly EasylogsDbContext _db = easylogsDbContext;
+    private readonly EasylogsDbContext _ctx = easylogsDbContext;
+    private readonly ILogger<IAppRepository> _logger = logger;
     
     public async Task<Userapp> Create(Userapp userapp)
     {
         try
         {
-            await _db.Userapps.AddAsync(userapp);
-            await _db.SaveChangesAsync();
+            await _ctx.Userapps.AddAsync(userapp);
+            await _ctx.SaveChangesAsync();
             
             return userapp;
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            _logger.LogError(e,  "{Class}:{Method}:{Message}", GetType().Name, MethodBase.GetCurrentMethod()?.Name, e.Message);
             throw;
         }
     }
@@ -28,11 +31,24 @@ public class UserRepository(EasylogsDbContext easylogsDbContext) : IUserReposito
     {
         try
         {
-            return _db.Userapps.FirstOrDefault(usra => usra.UserAppId == userappId);
+            return _ctx.Userapps.FirstOrDefault(usra => usra.UserAppId == userappId);
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            _logger.LogError(e,  "{Class}:{Method}:{Message}", GetType().Name, MethodBase.GetCurrentMethod()?.Name, e.Message);
+            throw;
+        }
+    }
+
+    public Userapp? Get(string username)
+    {
+        try
+        {
+            return _ctx.Userapps.FirstOrDefault(usra => usra.Username == username);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e,  "{Class}:{Method}:{Message}", GetType().Name, MethodBase.GetCurrentMethod()?.Name, e.Message);
             throw;
         }
     }
@@ -41,11 +57,11 @@ public class UserRepository(EasylogsDbContext easylogsDbContext) : IUserReposito
     {
         try
         {
-            return [.. _db.Userapps];
+            return [.. _ctx.Userapps];
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            _logger.LogError(e,  "{Class}:{Method}:{Message}", GetType().Name, MethodBase.GetCurrentMethod()?.Name, e.Message);
             throw;
         }
     }
@@ -54,14 +70,14 @@ public class UserRepository(EasylogsDbContext easylogsDbContext) : IUserReposito
     {
         try
         {
-            _db.Userapps.Update(userapp);
-            await _db.SaveChangesAsync();
+            _ctx.Userapps.Update(userapp);
+            await _ctx.SaveChangesAsync();
             
             return userapp;
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            _logger.LogError(e,  "{Class}:{Method}:{Message}", GetType().Name, MethodBase.GetCurrentMethod()?.Name, e.Message);
             throw;
         }
     }
@@ -70,14 +86,14 @@ public class UserRepository(EasylogsDbContext easylogsDbContext) : IUserReposito
     {
         try
         {
-            _db.Userapps.Remove(userapp);
-            await _db.SaveChangesAsync();
+            _ctx.Userapps.Remove(userapp);
+            await _ctx.SaveChangesAsync();
             
             return true;
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            _logger.LogError(e,  "{Class}:{Method}:{Message}", GetType().Name, MethodBase.GetCurrentMethod()?.Name, e.Message);
             throw;
         }
     }

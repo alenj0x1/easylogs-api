@@ -1,12 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace easylogsAPI.Models.Requests;
+namespace easylogsAPI.Models.Requests.User;
 
 public class UpdateUserRequest
 {
-    [Required]
-    public Guid UserId { get; set; }
-    [MaxLength(100)]
     public string? Username { get; set; }
     [EmailAddress]
     [MaxLength(255)]

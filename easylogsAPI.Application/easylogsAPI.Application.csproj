@@ -14,4 +14,8 @@
       <ProjectReference Include="..\easylogsAPI.Shared\easylogsAPI.Shared.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
+    </ItemGroup>
+
 </Project>

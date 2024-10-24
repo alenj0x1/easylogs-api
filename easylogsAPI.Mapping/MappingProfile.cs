@@ -9,5 +9,7 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         CreateMap<Userapp, UserDto>().ReverseMap();
+        CreateMap<Logtype, LogTypeDto>().ReverseMap();
+        CreateMap<Permission, PermissionDto>().ReverseMap();
     }
 }
