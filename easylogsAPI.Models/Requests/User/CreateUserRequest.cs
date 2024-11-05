@@ -14,4 +14,6 @@ public class CreateUserRequest
     [Required]
     [MaxLength(255)]
     public string Password { get; set; } = null!;
+    [Required]
+    public List<int> Permissions { get; set; } = [];
 }

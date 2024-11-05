@@ -14,4 +14,16 @@ public static class Parser
             throw;
         }
     }
+
+    public static Guid ToGuid(string value)
+    {
+        try
+        {
+            return Guid.Parse(value);
+        }
+        catch (Exception e)
+        {
+            return Guid.Empty;
+        }
+    }
 }

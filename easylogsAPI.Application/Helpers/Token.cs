@@ -37,7 +37,7 @@ public class Token(IConfiguration configuration) : IToken
                 Expiration = expiration
             };
         }
-        catch (Exception e)
+        catch (Exception)
         {
             return null;
         }

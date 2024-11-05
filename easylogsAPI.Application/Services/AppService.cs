@@ -68,7 +68,7 @@ public class AppService(IAppRepository appRepository, IMapper mapper, ILogger<IA
     {
         try
         {
-            var dt = _appRepository.GetPermission(logtypeId);
+            var dt = _appRepository.GetLogtype(logtypeId);
             var mp = _mapper.Map<LogTypeDto>(dt);
 
             return _serviceData.CreateResponse(mp);

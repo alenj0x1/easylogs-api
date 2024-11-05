@@ -31,7 +31,7 @@ public class UserRepository(EasylogsDbContext easylogsDbContext, ILogger<IAppRep
     {
         try
         {
-            return _ctx.Userapps.FirstOrDefault(usra => usra.UserAppId == userappId);
+            return _ctx.Userapps.FirstOrDefault(usra => usra.UserAppId == userappId && usra.DeletedAt == null);
         }
         catch (Exception e)
         {
@@ -44,7 +44,33 @@ public class UserRepository(EasylogsDbContext easylogsDbContext, ILogger<IAppRep
     {
         try
         {
-            return _ctx.Userapps.FirstOrDefault(usra => usra.Username == username);
+            return _ctx.Userapps.FirstOrDefault(usra => usra.Username == username && usra.DeletedAt == null);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e,  "{Class}:{Method}:{Message}", GetType().Name, MethodBase.GetCurrentMethod()?.Name, e.Message);
+            throw;
+        }
+    }
+
+    public Userapp? GetByEmail(string email)
+    {
+        try
+        {
+            return _ctx.Userapps.FirstOrDefault(usra => usra.Email == email && usra.DeletedAt == null);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e,  "{Class}:{Method}:{Message}", GetType().Name, MethodBase.GetCurrentMethod()?.Name, e.Message);
+            throw;
+        }
+    }
+
+    public List<Userapppermission> GetPermissions(Userapp userapp)
+    {
+        try
+        {
+            return [.. _ctx.Userapppermissions.Where(usrp => usrp.Userid == userapp.UserAppId)];
         }
         catch (Exception e)
         {
@@ -57,7 +83,7 @@ public class UserRepository(EasylogsDbContext easylogsDbContext, ILogger<IAppRep
     {
         try
         {
-            return [.. _ctx.Userapps];
+            return [.. _ctx.Userapps.Where(usra => usra.DeletedAt == null)];
         }
         catch (Exception e)
         {
@@ -86,7 +112,7 @@ public class UserRepository(EasylogsDbContext easylogsDbContext, ILogger<IAppRep
     {
         try
         {
-            _ctx.Userapps.Remove(userapp);
+            _ctx.Userapps.Update(userapp);
             await _ctx.SaveChangesAsync();
             
             return true;

@@ -105,6 +105,7 @@ public static class ServicesExtension
         services.AddAutoMapper(typeof(MappingProfile));
         
         // Middlewares
+        services.AddScoped(typeof(PermissionMiddleware));
         services.AddScoped(typeof(ErrorHandlerMiddleware));
         
         // Services
@@ -116,6 +117,7 @@ public static class ServicesExtension
         services.AddScoped<IAppRepository, AppRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<ITokenRepository, TokenRepository>();
+        services.AddScoped<IUserPermissionRepository, UserPermissionRepository>();
         
         // Helpers
         services.AddScoped<IToken, Token>();
@@ -125,7 +127,8 @@ public static class ServicesExtension
         
         // First user creation
         var userRepository = services.BuildServiceProvider().GetRequiredService<IUserRepository>();
-        if (await Verify.FirstUserCreation(userRepository, configuration))
+        var userPermissionRepository = services.BuildServiceProvider().GetRequiredService<IUserPermissionRepository>();
+        if (await Verify.FirstUserCreation(userRepository, userPermissionRepository, configuration))
         {
             Log.Information(ResponseConsts.UserFirstCreated);
         }

@@ -3,7 +3,9 @@ using easylogsAPI.Application.Interfaces.Services;
 using easylogsAPI.Dto;
 using easylogsAPI.Models.Requests.User;
 using easylogsAPI.Models.Responses;
+using easylogsAPI.WebApi.Attributes;
 using easylogsAPI.WebApi.Interfaces.Controllers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace easylogsAPI.WebApi.Controllers;
@@ -14,22 +16,27 @@ public class UserController(IUserService userService, ILogger<UserController> lo
 {
     private readonly IUserService _userService = userService;
     private readonly ILogger<UserController> _logger = logger;
-    
+
     [HttpPost("create")]
+    [Permission("CREATE_USERS")]
+    [Authorize]
     public Task<BaseResponse<UserDto>> Create(CreateUserRequest request)
     {
         try
         {
-            return _userService.Create(request);
+            var claim = User.FindFirst("UserId") ?? throw new Exception("token not found");
+            return _userService.Create(claim, request);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "{Class}:{Method}:{Message}", GetType().Name, MethodBase.GetCurrentMethod()?.Name, e.Message);
+            _logger.LogError(e, "{Class}:{Method}:{Message}", GetType().Name, MethodBase.GetCurrentMethod()?.Name,
+                e.Message);
             throw;
         }
     }
 
     [HttpGet("{userappId:guid}")]
+    [Authorize]
     public BaseResponse<UserDto> Get(Guid userappId)
     {
         try
@@ -38,12 +45,14 @@ public class UserController(IUserService userService, ILogger<UserController> lo
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "{Class}:{Method}:{Message}", GetType().Name, MethodBase.GetCurrentMethod()?.Name, e.Message);
+            _logger.LogError(e, "{Class}:{Method}:{Message}", GetType().Name, MethodBase.GetCurrentMethod()?.Name,
+                e.Message);
             throw;
         }
     }
 
     [HttpGet]
+    [Authorize]
     public BaseResponse<List<UserDto>> Get()
     {
         try
@@ -52,35 +61,44 @@ public class UserController(IUserService userService, ILogger<UserController> lo
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "{Class}:{Method}:{Message}", GetType().Name, MethodBase.GetCurrentMethod()?.Name, e.Message);
+            _logger.LogError(e, "{Class}:{Method}:{Message}", GetType().Name, MethodBase.GetCurrentMethod()?.Name,
+                e.Message);
             throw;
         }
     }
 
     [HttpPut("update/{userappId:guid}")]
+    [Permission("UPDATE_USERS")]
+    [Authorize]
     public Task<BaseResponse<UserDto>> Update([FromBody] UpdateUserRequest request, Guid userappId)
     {
         try
         {
-            return _userService.Update(request, userappId);
+            var claim = User.FindFirst("UserId") ?? throw new Exception("token not found");
+            return _userService.Update(claim, request, userappId);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "{Class}:{Method}:{Message}", GetType().Name, MethodBase.GetCurrentMethod()?.Name, e.Message);
+            _logger.LogError(e, "{Class}:{Method}:{Message}", GetType().Name, MethodBase.GetCurrentMethod()?.Name,
+                e.Message);
             throw;
         }
     }
 
     [HttpDelete("delete/{userappId:guid}")]
+    [Permission("DELETE_USERS")]
+    [Authorize]
     public Task<BaseResponse<bool>> Delete(Guid userappId)
     {
         try
         {
-            return _userService.Delete(userappId);
+            var claim = User.FindFirst("UserId") ?? throw new Exception("token not found");
+            return _userService.Delete(claim, userappId);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "{Class}:{Method}:{Message}", GetType().Name, MethodBase.GetCurrentMethod()?.Name, e.Message);
+            _logger.LogError(e, "{Class}:{Method}:{Message}", GetType().Name, MethodBase.GetCurrentMethod()?.Name,
+                e.Message);
             throw;
         }
     }
