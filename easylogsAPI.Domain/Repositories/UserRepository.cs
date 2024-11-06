@@ -79,11 +79,11 @@ public class UserRepository(EasylogsDbContext easylogsDbContext, ILogger<IAppRep
         }
     }
 
-    public List<Userapp> Get()
+    public IQueryable<Userapp> Get()
     {
         try
         {
-            return [.. _ctx.Userapps.Where(usra => usra.DeletedAt == null)];
+            return _ctx.Userapps;
         }
         catch (Exception e)
         {

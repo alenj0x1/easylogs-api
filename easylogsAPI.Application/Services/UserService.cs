@@ -6,6 +6,7 @@ using easylogsAPI.Application.Interfaces.Services;
 using easylogsAPI.Domain.Entities;
 using easylogsAPI.Domain.Interfaces.Repositories;
 using easylogsAPI.Dto;
+using easylogsAPI.Models.Requests;
 using easylogsAPI.Models.Requests.User;
 using easylogsAPI.Models.Responses;
 using easylogsAPI.Shared;
@@ -82,11 +83,11 @@ public class UserService(IAppRepository appRepository, IUserRepository userRepos
         }
     }
 
-    public BaseResponse<List<UserDto>> Get()
+    public BaseResponse<List<UserDto>> Get(BaseRequest request)
     {
         try
         {
-            var gt = _userRepository.Get();
+            var gt = _userRepository.Get().Skip(request.Offset).Take(request.Limit).ToList();
             var mp = _mapper.Map<List<UserDto>>(gt);
 
             return _serviceData.CreateResponse(mp);

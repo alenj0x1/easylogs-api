@@ -22,7 +22,7 @@ public class AuthService : IAuthService
     private readonly IConfiguration _config;
     private readonly IToken _tokenHelper;
     private readonly ILogger<IAuthService> _logger;
-    private readonly ServiceData _serviceData = new ServiceData();
+    private readonly ServiceData _serviceData = new ();
 
     public AuthService(IUserRepository userRepository, ITokenRepository tokenRepository, IConfiguration configuration, ILogger<IAuthService> logger)
     {

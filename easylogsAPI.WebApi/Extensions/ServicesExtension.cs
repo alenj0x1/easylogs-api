@@ -112,12 +112,14 @@ public static class ServicesExtension
         services.AddScoped<IAppService, AppService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<ILogService, LogService>();
         
         // Repositories
         services.AddScoped<IAppRepository, AppRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<ITokenRepository, TokenRepository>();
         services.AddScoped<IUserPermissionRepository, UserPermissionRepository>();
+        services.AddScoped<ILogRepository, LogRepository>();
         
         // Helpers
         services.AddScoped<IToken, Token>();

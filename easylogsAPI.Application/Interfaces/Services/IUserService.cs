@@ -10,7 +10,7 @@ public interface IUserService
 {
     Task<BaseResponse<UserDto>> Create(Claim userIdClaim, CreateUserRequest request);
     BaseResponse<UserDto> Get(Guid userappId);
-    BaseResponse<List<UserDto>> Get();
+    BaseResponse<List<UserDto>> Get(BaseRequest request);
     Task<BaseResponse<UserDto>> Update(Claim userIdClaim, UpdateUserRequest request, Guid userappId);
     Task<BaseResponse<bool>> Delete(Claim userIdClaim, Guid userappId);
 }

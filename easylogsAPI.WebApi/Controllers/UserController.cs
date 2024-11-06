@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using easylogsAPI.Application.Interfaces.Services;
 using easylogsAPI.Dto;
+using easylogsAPI.Models.Requests;
 using easylogsAPI.Models.Requests.User;
 using easylogsAPI.Models.Responses;
 using easylogsAPI.WebApi.Attributes;
@@ -51,13 +52,13 @@ public class UserController(IUserService userService, ILogger<UserController> lo
         }
     }
 
-    [HttpGet]
+    [HttpPost]
     [Authorize]
-    public BaseResponse<List<UserDto>> Get()
+    public BaseResponse<List<UserDto>> Get([FromBody] BaseRequest request)
     {
         try
         {
-            return _userService.Get();
+            return _userService.Get(request);
         }
         catch (Exception e)
         {
