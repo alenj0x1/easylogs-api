@@ -28,6 +28,8 @@ public class ErrorHandlerMiddleware(ILogger<ErrorHandlerMiddleware> logger) : IM
             };
       
             _logger.LogInformation("{Method} {StatusCode} {NameIdentifier}", context.Request.Method, context.Response.StatusCode, context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            
+            context.Response.StatusCode = status;
             await context.Response.WriteAsJsonAsync(rsp);
         }
         catch (Exception e)
@@ -42,6 +44,8 @@ public class ErrorHandlerMiddleware(ILogger<ErrorHandlerMiddleware> logger) : IM
             };
       
             _logger.LogInformation("{Method} {StatusCode} {NameIdentifier}", context.Request.Method, context.Response.StatusCode, context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            
+            context.Response.StatusCode = status;
             await context.Response.WriteAsJsonAsync(rsp);
         }
     }

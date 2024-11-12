@@ -40,7 +40,7 @@ public class AuthService : IAuthService
             var usr = _userRepository.Get(request.Username) ?? throw new Exception(ResponseConsts.UserOrPasswordIncorrect);
             if (!Hasher.ComparePassword(request.Password, usr.Password)) throw new Exception(ResponseConsts.UserOrPasswordIncorrect);
 
-            return _serviceData.CreateResponse(await CreateTokens(usr, httpContext));
+            return _serviceData.CreateResponse(await CreateTokens(usr, httpContext), "Logged correctly");
         }
         catch (Exception e)
         {
