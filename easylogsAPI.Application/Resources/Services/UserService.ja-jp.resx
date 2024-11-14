@@ -1,11 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-
-<root>
-    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <xsd:element name="root" msdata:IsDataSet="true">
-            
-        </xsd:element>
-    </xsd:schema>
+﻿<root>
     <resheader name="resmimetype">
         <value>text/microsoft-resx</value>
     </resheader>
@@ -18,46 +11,46 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
+    <data name="UserUpdated" xml:space="preserve">
+        <value>ユーザーの更新に成功</value>
+    </data>
     <data name="UserCreated" xml:space="preserve">
-        <value>Usuario creado correctamente</value>
+        <value>ユーザーの作成に成功</value>
     </data>
     <data name="UserDeleted" xml:space="preserve">
-        <value>Usuario eliminado correctamente</value>
-    </data>
-    <data name="UserUpdated" xml:space="preserve">
-        <value>Usuario actualizado correctamente</value>
+        <value>ユーザー削除成功</value>
     </data>
     <data name="IdentityValidationFailed" xml:space="preserve">
-        <value>Validación de identidad fallida</value>
+        <value>신원 확인 실패</value>
     </data>
     <data name="OnlyAnAdministratorCanGrantAdministratorPermissions" xml:space="preserve">
-        <value>Unicamente un administrador, puede otorgar permisos de administrador</value>
+        <value>管理者権限を付与できるのは管理者のみです。</value>
     </data>
     <data name="RequiredArgumentPermissions" xml:space="preserve">
-        <value>"Permissions" es un permiso requerido</value>
+        <value>「パーミット」は必要な許可証</value>
     </data>
     <data name="IncorrectArgumentPermission" xml:space="preserve">
-        <value>Incorrecto argumento de "Permissions</value>
+        <value>Permissions "の引数が正しくない。</value>
     </data>
     <data name="UserUsernameRegistered" xml:space="preserve">
-        <value>Nombre de usuario registrado</value>
+        <value>登録ユーザー名</value>
     </data>
     <data name="UserEmailRegistered" xml:space="preserve">
-        <value>Correo electronico registrado</value>
+        <value>登録メールアドレス</value>
     </data>
     <data name="RequiredArgumentStartDateAndEndDate" xml:space="preserve">
-        <value>La fecha de inicio y defin son requeridas</value>
+        <value>「StartDate 「と 」EndDate "は必須。</value>
     </data>
     <data name="RequiredArgumentEndDateAndStartDate" xml:space="preserve">
-        <value>La fecha de fin y de inicio son requeridas</value>
-    </data>
-    <data name="IncorrectFormatStartDate" xml:space="preserve">
-        <value>Fecha de inicio tiene un formato incorrecto</value>
+        <value>「EndDate 「と 」StartDate "は必須。</value>
     </data>
     <data name="IncorrectFormatEndDate" xml:space="preserve">
-        <value>Fecha de fin tiene un formato incorrecto</value>
+        <value>EndDate の形式が正しくありません。</value>
+    </data>
+    <data name="IncorrectFormatStartDate" xml:space="preserve">
+        <value>StartDate の形式が正しくありません。</value>
     </data>
     <data name="CannotEliminateItself" xml:space="preserve">
-        <value>No puede eliminarse a si mismo</value>
+        <value>自分自身を排除できない</value>
     </data>
 </root>

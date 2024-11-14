@@ -31,14 +31,14 @@ public class UserService(IAppRepository appRepository, IUserRepository userRepos
     {
         try
         {
-            var cru = _userRepository.Get(Parser.ToGuid(userIdClaim.Value)) ?? throw new Exception("token not found");
-            var adm = _userRepository.GetPermissions(cru).FirstOrDefault(uprm => uprm.PermissionId == 1);
+            var cru = _userRepository.Get(Parser.ToGuid(userIdClaim.Value)) ?? throw new Exception(_localizer["IdentityValidationFailed"]);
+            var adm = _userRepository.GetPermissions(cru).FirstOrDefault(uprm => uprm.PermissionId == PermissionConsts.Administrator);
             
-            if (request.Permissions.Contains(1) && adm is null) throw new Exception("only an administrator, can assign an administrator permission");
-            if (request.Permissions.Count == 0) throw new Exception("permissions is a required argument");
-            if (_appRepository.GetPermissions().Count(prm => request.Permissions.Contains(prm.PermissionId)) < request.Permissions.Count) throw new Exception("a permission argumented is invalid");
-            if (_userRepository.Get(request.Username) is not null) throw new Exception("user with username already exists");
-            if (_userRepository.GetByEmail(request.Email) is not null) throw new Exception("user with email already exists");
+            if (request.Permissions.Contains(1) && adm is null) throw new Exception(_localizer["OnlyAnAdministratorCanGrantAdministratorPermissions"]);
+            if (request.Permissions.Count == 0) throw new Exception(_localizer["RequiredArgumentPermissions"]);
+            if (_appRepository.GetPermissions().Count(prm => request.Permissions.Contains(prm.PermissionId)) < request.Permissions.Count) throw new Exception(_localizer["IncorrectArgumentPermission"]);
+            if (_userRepository.Get(request.Username) is not null) throw new Exception(_localizer["UserUsernameRegistered"]);
+            if (_userRepository.GetByEmail(request.Email) is not null) throw new Exception(_localizer["UserEmailRegistered"]);
             
             
             var crt = await _userRepository.Create(new Userapp()
@@ -60,7 +60,7 @@ public class UserService(IAppRepository appRepository, IUserRepository userRepos
             
             var mp = _mapper.Map<UserDto>(crt);
 
-            return _serviceData.CreateResponse(mp, _localizer["UserCreatedCorrectly"], 201);
+            return _serviceData.CreateResponse(mp, _localizer["UserCreated"], 201);
         }
         catch (Exception e)
         {
@@ -106,13 +106,13 @@ public class UserService(IAppRepository appRepository, IUserRepository userRepos
                 gt = gt.Where(usra => usra.Email == request.Email);
             }
 
-            if (request.StartDate is not null && request.EndDate is null) throw new Exception("start date and end date are required");
-            if (request.EndDate is not null && request.StartDate is null) throw new Exception("end date and start date are required");
+            if (request.StartDate is not null && request.EndDate is null) throw new Exception(_localizer["RequiredArgumentStartDateAndEndDate"]);
+            if (request.EndDate is not null && request.StartDate is null) throw new Exception(_localizer["RequiredArgumentEndDateAndStartDate"]);
             
             if (request.StartDate is not null && request.EndDate is not null)
             {
-                var stdParsed = Parser.ToDateTime(request.StartDate) ?? throw new Exception("start date is a incorrect format");
-                var endParsed = Parser.ToDateTime(request.EndDate) ?? throw new Exception("end date is a incorrect format");
+                var stdParsed = Parser.ToDateTime(request.StartDate) ?? throw new Exception(_localizer["IncorrectFormatStartDate"]);
+                var endParsed = Parser.ToDateTime(request.EndDate) ?? throw new Exception(_localizer["IncorrectFormatEndDate"]);
                 
                 gt = gt.Where(usra => usra.CreatedAt >= stdParsed && usra.CreatedAt <= endParsed);
             }
@@ -132,14 +132,14 @@ public class UserService(IAppRepository appRepository, IUserRepository userRepos
     {
         try
         {
-            var cru = _userRepository.Get(Parser.ToGuid(userIdClaim.Value)) ?? throw new Exception("token not found");
-            var adm = _userRepository.GetPermissions(cru).FirstOrDefault(uprm => uprm.PermissionId == 1);
+            var cru = _userRepository.Get(Parser.ToGuid(userIdClaim.Value)) ?? throw new Exception(_localizer["IdentityValidationFailed"]);
+            var adm = _userRepository.GetPermissions(cru).FirstOrDefault(uprm => uprm.PermissionId == PermissionConsts.Administrator);
             
-            if (request.Permissions is not null && request.Permissions.Contains(1) && adm is null) throw new Exception("only an administrator, can assign an administrator permission");
-            if (request.Permissions is not null && request.Permissions.Count == 0) throw new Exception("permissions is a required argument");
-            if (request.Permissions is not null && _appRepository.GetPermissions().Count(prm => request.Permissions.Contains(prm.PermissionId)) < request.Permissions.Count) throw new Exception("a permission argumented is invalid");
-            if (request.Username is not null && _userRepository.Get(request.Username) is not null) throw new Exception("user with username already exists");
-            if (request.Email is not null && _userRepository.GetByEmail(request.Email) is not null) throw new Exception("user with email already exists");
+            if (request.Permissions is not null && request.Permissions.Contains(1) && adm is null) throw new Exception(_localizer["OnlyAnAdministratorCanGrantAdministratorPermissions"]);
+            if (request.Permissions is not null && request.Permissions.Count == 0) throw new Exception(_localizer["RequiredArgumentPermissions"]);
+            if (request.Permissions is not null && _appRepository.GetPermissions().Count(prm => request.Permissions.Contains(prm.PermissionId)) < request.Permissions.Count) throw new Exception(_localizer["IncorrectArgumentPermission"]);
+            if (request.Username is not null && _userRepository.Get(request.Username) is not null) throw new Exception(_localizer["UserUsernameRegistered"]);
+            if (request.Email is not null && _userRepository.GetByEmail(request.Email) is not null) throw new Exception(_localizer["UserEmailRegistered"]);
             
             var gt = _userRepository.Get(userappId) ?? throw new Exception(ResponseConsts.UserNotFound);
             
@@ -165,7 +165,7 @@ public class UserService(IAppRepository appRepository, IUserRepository userRepos
             var upd = await _userRepository.Update(gt);
             var mp = _mapper.Map<UserDto>(upd);
 
-            return _serviceData.CreateResponse(mp, ResponseConsts.UserUpdated, 204);
+            return _serviceData.CreateResponse(mp, _localizer["UserUpdated"], 204);
         }
         catch (Exception e)
         {
@@ -178,16 +178,16 @@ public class UserService(IAppRepository appRepository, IUserRepository userRepos
     {
         try
         {
-            var cru = _userRepository.Get(Parser.ToGuid(userIdClaim.Value)) ?? throw new Exception("token not found");
+            var cru = _userRepository.Get(Parser.ToGuid(userIdClaim.Value)) ?? throw new Exception(_localizer["IdentityValidationFailed"]);
 
-            if (cru.UserAppId == userappId) throw new Exception("Cannot eliminate itself");
+            if (cru.UserAppId == userappId) throw new Exception(_localizer["CannotEliminateItself"]);
             
             var gt = _userRepository.Get(userappId) ?? throw new Exception(ResponseConsts.UserNotFound);
             
             gt.DeletedAt = DateTime.UtcNow;
             var del = await _userRepository.Delete(gt);
             
-            return _serviceData.CreateResponse(del, ResponseConsts.UserDeleted);
+            return _serviceData.CreateResponse(del, _localizer["UserDeleted"]);
         }
         catch (Exception e)
         {

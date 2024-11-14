@@ -18,7 +18,46 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="UserCreatedCorrectly" xml:space="preserve">
+    <data name="UserCreated" xml:space="preserve">
         <value>User created correctly</value>
+    </data>
+    <data name="UserUpdated" xml:space="preserve">
+        <value>User updated correctly</value>
+    </data>
+    <data name="UserDeleted" xml:space="preserve">
+        <value>User deleted correctly</value>
+    </data>
+    <data name="IdentityValidationFailed" xml:space="preserve">
+        <value>Identity validation failed</value>
+    </data>
+    <data name="OnlyAnAdministratorCanGrantAdministratorPermissions" xml:space="preserve">
+        <value>Only an administrator can grant administrator permissions</value>
+    </data>
+    <data name="RequiredArgumentPermissions" xml:space="preserve">
+        <value>"Permissions" is a required argument</value>
+    </data>
+    <data name="IncorrectArgumentPermission" xml:space="preserve">
+        <value>Incorrect argument for "Permissions"</value>
+    </data>
+    <data name="UserUsernameRegistered" xml:space="preserve">
+        <value>Registered user name</value>
+    </data>
+    <data name="UserEmailRegistered" xml:space="preserve">
+        <value>Email address registered</value>
+    </data>
+    <data name="RequiredArgumentEndDateAndStartDate" xml:space="preserve">
+        <value>"EndDate" and "StartDate" are required</value>
+    </data>
+    <data name="RequiredArgumentStartDateAndEndDate" xml:space="preserve">
+        <value>"StartDate" and "EndDate" are required</value>
+    </data>
+    <data name="IncorrectFormatEndDate" xml:space="preserve">
+        <value>EndDate has a incorrect format</value>
+    </data>
+    <data name="IncorrectFormatStartDate" xml:space="preserve">
+        <value>StartDate has a incorrect format</value>
+    </data>
+    <data name="CannotEliminateItself" xml:space="preserve">
+        <value>Cannot eliminate itself</value>
     </data>
 </root>

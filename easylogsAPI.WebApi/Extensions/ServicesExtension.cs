@@ -163,7 +163,8 @@ public static class ServicesExtension
         var supportedCultures = new List<CultureInfo>
         {
             new ("en-US"),
-            new ("es-ES")
+            new ("es-ES"),
+            new ("ko-KR")
         };
         
         services.Configure<RequestLocalizationOptions>(options =>

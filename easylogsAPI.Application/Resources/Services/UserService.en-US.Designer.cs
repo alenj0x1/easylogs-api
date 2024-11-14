@@ -60,11 +60,128 @@ namespace easylogsAPI.Application.Resources.Services {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot eliminate itself.
+        /// </summary>
+        internal static string CannotEliminateItself {
+            get {
+                return ResourceManager.GetString("CannotEliminateItself", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identity validation failed.
+        /// </summary>
+        internal static string IdentityValidationFailed {
+            get {
+                return ResourceManager.GetString("IdentityValidationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incorrect argument for &quot;Permissions&quot;.
+        /// </summary>
+        internal static string IncorrectArgumentPermission {
+            get {
+                return ResourceManager.GetString("IncorrectArgumentPermission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EndDate has a incorrect format.
+        /// </summary>
+        internal static string IncorrectFormatEndDate {
+            get {
+                return ResourceManager.GetString("IncorrectFormatEndDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to StartDate has a incorrect format.
+        /// </summary>
+        internal static string IncorrectFormatStartDate {
+            get {
+                return ResourceManager.GetString("IncorrectFormatStartDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only an administrator can grant administrator permissions.
+        /// </summary>
+        internal static string OnlyAnAdministratorCanGrantAdministratorPermissions {
+            get {
+                return ResourceManager.GetString("OnlyAnAdministratorCanGrantAdministratorPermissions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &quot;EndDate&quot; and &quot;StartDate&quot; are required.
+        /// </summary>
+        internal static string RequiredArgumentEndDateAndStartDate {
+            get {
+                return ResourceManager.GetString("RequiredArgumentEndDateAndStartDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &quot;Permissions&quot; is a required argument.
+        /// </summary>
+        internal static string RequiredArgumentPermissions {
+            get {
+                return ResourceManager.GetString("RequiredArgumentPermissions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &quot;StartDate&quot; and &quot;EndDate&quot; are required.
+        /// </summary>
+        internal static string RequiredArgumentStartDateAndEndDate {
+            get {
+                return ResourceManager.GetString("RequiredArgumentStartDateAndEndDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User created correctly.
         /// </summary>
-        internal static string UserCreatedCorrectly {
+        internal static string UserCreated {
             get {
-                return ResourceManager.GetString("UserCreatedCorrectly", resourceCulture);
+                return ResourceManager.GetString("UserCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User deleted correctly.
+        /// </summary>
+        internal static string UserDeleted {
+            get {
+                return ResourceManager.GetString("UserDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email address registered.
+        /// </summary>
+        internal static string UserEmailRegistered {
+            get {
+                return ResourceManager.GetString("UserEmailRegistered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User updated correctly.
+        /// </summary>
+        internal static string UserUpdated {
+            get {
+                return ResourceManager.GetString("UserUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registered user name.
+        /// </summary>
+        internal static string UserUsernameRegistered {
+            get {
+                return ResourceManager.GetString("UserUsernameRegistered", resourceCulture);
             }
         }
     }

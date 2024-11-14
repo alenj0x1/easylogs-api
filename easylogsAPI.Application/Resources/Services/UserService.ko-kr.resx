@@ -1,11 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-
-<root>
-    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <xsd:element name="root" msdata:IsDataSet="true">
-            
-        </xsd:element>
-    </xsd:schema>
+﻿<root>
     <resheader name="resmimetype">
         <value>text/microsoft-resx</value>
     </resheader>
@@ -19,45 +12,45 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="UserCreated" xml:space="preserve">
-        <value>Usuario creado correctamente</value>
-    </data>
-    <data name="UserDeleted" xml:space="preserve">
-        <value>Usuario eliminado correctamente</value>
+        <value>사용자 생성 성공</value>
     </data>
     <data name="UserUpdated" xml:space="preserve">
-        <value>Usuario actualizado correctamente</value>
+        <value>사용자 업데이트 성공</value>
+    </data>
+    <data name="UserDeleted" xml:space="preserve">
+        <value>사용자 삭제 성공</value>
     </data>
     <data name="IdentityValidationFailed" xml:space="preserve">
-        <value>Validación de identidad fallida</value>
+        <value>신원 확인 실패</value>
     </data>
     <data name="OnlyAnAdministratorCanGrantAdministratorPermissions" xml:space="preserve">
-        <value>Unicamente un administrador, puede otorgar permisos de administrador</value>
+        <value>관리자만 관리자 권한을 부여할 수 있습니다.</value>
     </data>
     <data name="RequiredArgumentPermissions" xml:space="preserve">
-        <value>"Permissions" es un permiso requerido</value>
+        <value>“허가"는 필수 허가입니다</value>
     </data>
     <data name="IncorrectArgumentPermission" xml:space="preserve">
-        <value>Incorrecto argumento de "Permissions</value>
+        <value>“권한"에 대한 인수가 잘못되었습니다</value>
     </data>
     <data name="UserUsernameRegistered" xml:space="preserve">
-        <value>Nombre de usuario registrado</value>
+        <value>등록된 사용자 이름</value>
     </data>
     <data name="UserEmailRegistered" xml:space="preserve">
-        <value>Correo electronico registrado</value>
-    </data>
-    <data name="RequiredArgumentStartDateAndEndDate" xml:space="preserve">
-        <value>La fecha de inicio y defin son requeridas</value>
+        <value>등록된 이메일 주소</value>
     </data>
     <data name="RequiredArgumentEndDateAndStartDate" xml:space="preserve">
-        <value>La fecha de fin y de inicio son requeridas</value>
+        <value>“EndDate” 및 ‘StartDate’는 필수입니다</value>
     </data>
-    <data name="IncorrectFormatStartDate" xml:space="preserve">
-        <value>Fecha de inicio tiene un formato incorrecto</value>
+    <data name="RequiredArgumentStartDateAndEndDate" xml:space="preserve">
+        <value>“시작 날짜” 및 ‘종료 날짜’는 필수입니다</value>
     </data>
     <data name="IncorrectFormatEndDate" xml:space="preserve">
-        <value>Fecha de fin tiene un formato incorrecto</value>
+        <value>EndDate의 형식이 잘못되었습니다</value>
+    </data>
+    <data name="IncorrectFormatStartDate" xml:space="preserve">
+        <value>StartDate의 형식이 잘못되었습니다</value>
     </data>
     <data name="CannotEliminateItself" xml:space="preserve">
-        <value>No puede eliminarse a si mismo</value>
+        <value>스스로 제거할 수 없음</value>
     </data>
 </root>
