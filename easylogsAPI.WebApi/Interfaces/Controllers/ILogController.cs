@@ -10,7 +10,7 @@ public interface ILogController
 {
     Task<BaseResponse<LogDto>> Create(CreateLogRequest request);
     BaseResponse<LogDto> Get(Guid id);
-    BaseResponse<List<LogDto>> Get([FromBody] BaseRequest request);
+    BaseResponse<List<LogDto>> Get([FromBody] GetLogsRequest request);
     Task<BaseResponse<LogDto>> Update([FromBody] UpdateLogRequest request, Guid id);
     Task<BaseResponse<bool>> Delete(Guid id);
 }

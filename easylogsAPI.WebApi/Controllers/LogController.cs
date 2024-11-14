@@ -53,7 +53,7 @@ public class LogController(ILogService logService, ILogger<UserController> logge
     [HttpPost]
     [Permission("VIEW_LOGS")]
     [Authorize]
-    public BaseResponse<List<LogDto>> Get([FromBody] BaseRequest request)
+    public BaseResponse<List<LogDto>> Get([FromBody] GetLogsRequest request)
     {
         try
         {

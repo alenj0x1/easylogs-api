@@ -54,7 +54,7 @@ public class UserController(IUserService userService, ILogger<UserController> lo
 
     [HttpPost]
     [Authorize]
-    public BaseResponse<List<UserDto>> Get([FromBody] BaseRequest request)
+    public BaseResponse<List<UserDto>> Get([FromBody] GetUsersRequest request)
     {
         try
         {
@@ -62,8 +62,7 @@ public class UserController(IUserService userService, ILogger<UserController> lo
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "{Class}:{Method}:{Message}", GetType().Name, MethodBase.GetCurrentMethod()?.Name,
-                e.Message);
+            _logger.LogError(e, "{Class}:{Method}:{Message}", GetType().Name, MethodBase.GetCurrentMethod()?.Name, e.Message);
             throw;
         }
     }

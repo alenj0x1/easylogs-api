@@ -83,12 +83,39 @@ public class UserService(IAppRepository appRepository, IUserRepository userRepos
         }
     }
 
-    public BaseResponse<List<UserDto>> Get(BaseRequest request)
+    public BaseResponse<List<UserDto>> Get(GetUsersRequest request)
     {
         try
         {
-            var gt = _userRepository.Get().Skip(request.Offset).Take(request.Limit).ToList();
-            var mp = _mapper.Map<List<UserDto>>(gt);
+            var gt = _userRepository.Get();
+            
+            if (request.UserAppId is not null)
+            {
+                gt = gt.Where(usra => usra.UserAppId == request.UserAppId);
+            }
+            
+            if (request.Username is not null)
+            {
+                gt = gt.Where(usra => usra.Username == request.Username);
+            }
+            
+            if (request.Email is not null)
+            {
+                gt = gt.Where(usra => usra.Email == request.Email);
+            }
+
+            if (request.StartDate is not null && request.EndDate is null) throw new Exception("start date and end date are required");
+            if (request.EndDate is not null && request.StartDate is null) throw new Exception("end date and start date are required");
+            
+            if (request.StartDate is not null && request.EndDate is not null)
+            {
+                var stdParsed = Parser.ToDateTime(request.StartDate) ?? throw new Exception("start date is a incorrect format");
+                var endParsed = Parser.ToDateTime(request.EndDate) ?? throw new Exception("end date is a incorrect format");
+                
+                gt = gt.Where(usra => usra.CreatedAt >= stdParsed && usra.CreatedAt <= endParsed);
+            }
+            
+            var mp = _mapper.Map<List<UserDto>>(gt.Skip(request.Offset).Take(request.Limit).ToList());
 
             return _serviceData.CreateResponse(mp);
         }

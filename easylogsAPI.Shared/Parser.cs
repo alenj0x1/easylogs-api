@@ -1,4 +1,6 @@
-﻿namespace easylogsAPI.Shared;
+﻿using System.Globalization;
+
+namespace easylogsAPI.Shared;
 
 public static class Parser
 {
@@ -24,6 +26,18 @@ public static class Parser
         catch (Exception e)
         {
             return Guid.Empty;
+        }
+    }
+
+    public static DateTime? ToDateTime(string value)
+    {
+        try
+        {
+            return DateTime.Parse(value, CultureInfo.InvariantCulture);
+        }
+        catch (Exception e)
+        {
+            return null;
         }
     }
 }
