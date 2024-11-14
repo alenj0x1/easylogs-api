@@ -11,6 +11,7 @@ using easylogsAPI.Mapping;
 using easylogsAPI.Shared.Consts;
 using easylogsAPI.WebApi.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -67,11 +68,11 @@ public static class ServicesExtension
             builder.TokenValidationParameters = new TokenValidationParameters()
             {
                 ValidateIssuer = true,
-                ValidIssuer = configuration["Jwt:Issuer"] ?? throw new Exception(ResponseConsts.MissingConfigurationJwtIssuer),
+                ValidIssuer = configuration["Jwt:Issuer"] ?? throw new Exception(ResponseConsts.ConfigurationMissingJwtIssuer),
                 ValidateAudience = true,
-                ValidAudience = configuration["Jwt:Audience"] ?? throw new Exception(ResponseConsts.MissingConfigurationJwtAudience),
+                ValidAudience = configuration["Jwt:Audience"] ?? throw new Exception(ResponseConsts.ConfigurationMissingJwtAudience),
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["Jwt:SecretKey"] ?? throw new Exception(ResponseConsts.MissingConfigurationJwtSecretKey))),
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["Jwt:SecretKey"] ?? throw new Exception(ResponseConsts.ConfigurationMissingJwtSecretKey))),
                 ValidateLifetime = false // <- by default is true
             };
             builder.Events = new JwtBearerEvents()
@@ -126,7 +127,7 @@ public static class ServicesExtension
         // Database
         services.AddDbContext<EasylogsDbContext>(builder =>
         {
-            builder.UseNpgsql(configuration.GetConnectionString("postgres") ?? throw new Exception(ResponseConsts.MissingConfigurationPostgresConnectionString));
+            builder.UseNpgsql(configuration.GetConnectionString("postgres") ?? throw new Exception(ResponseConsts.ConfigurationMissingPostgresConnectionString));
         });
 
         // Automapper
@@ -151,9 +152,13 @@ public static class ServicesExtension
         
         // Helpers
         services.AddScoped<IToken, Token>();
+
+        services.AddLocalization(options => options.ResourcesPath = "Resources");
         
         // Controllers
-        services.AddControllers();
+        services.AddControllers()
+            .AddDataAnnotationsLocalization()
+            .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
         
         // First user creation
         var userRepository = services.BuildServiceProvider().GetRequiredService<IUserRepository>();

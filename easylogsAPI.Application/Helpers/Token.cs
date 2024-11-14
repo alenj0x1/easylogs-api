@@ -21,12 +21,12 @@ public class Token(IConfiguration configuration) : IToken
             var claims = new ClaimsIdentity();
             claims.AddClaim(new Claim("UserId", userapp.UserAppId.ToString()));
 
-            var secretKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_config["Jwt:SecretKey"] ?? throw new Exception(ResponseConsts.MissingConfigurationJwtSecretKey)));
+            var secretKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_config["Jwt:SecretKey"] ?? throw new Exception(ResponseConsts.ConfigurationMissingJwtSecretKey)));
             var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
-                audience: _config["Jwt:Audience"] ?? throw new Exception(ResponseConsts.MissingConfigurationJwtAudience),
-                issuer: _config["Jwt:Issuer"] ?? throw new Exception(ResponseConsts.MissingConfigurationJwtIssuer),
+                audience: _config["Jwt:Audience"] ?? throw new Exception(ResponseConsts.ConfigurationMissingJwtAudience),
+                issuer: _config["Jwt:Issuer"] ?? throw new Exception(ResponseConsts.ConfigurationMissingJwtIssuer),
                 claims: claims.Claims,
                 expires: expiration,
                 signingCredentials: signingCredentials);

@@ -4,6 +4,7 @@ using easylogsAPI.Domain.Entities;
 using easylogsAPI.Domain.Interfaces.Repositories;
 using easylogsAPI.Models.Responses;
 using easylogsAPI.Shared;
+using easylogsAPI.Shared.Consts;
 using easylogsAPI.WebApi.Attributes;
 using Microsoft.AspNetCore.Mvc.Controllers;
 
@@ -31,7 +32,7 @@ public class PermissionMiddleware(
                 var usr = _userRepository.Get(Parser.ToGuid(clm.Value)) ?? throw new Exception("User not found");
                 var usrPerms = _userRepository.GetPermissions(usr);
 
-                if (usrPerms.Any(usrp => usrp.PermissionId == 1)) // <- administrator
+                if (usrPerms.Any(usrp => usrp.PermissionId == PermissionConsts.Administrator)) // <- administrator
                 {
                     await next(context);
                     return;

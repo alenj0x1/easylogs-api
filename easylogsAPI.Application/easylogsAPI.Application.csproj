@@ -11,6 +11,7 @@
       <ProjectReference Include="..\easylogsAPI.Dto\easylogsAPI.Dto.csproj" />
       <ProjectReference Include="..\easylogsAPI.Mapping\easylogsAPI.Mapping.csproj" />
       <ProjectReference Include="..\easylogsAPI.Models\easylogsAPI.Models.csproj" />
+      <ProjectReference Include="..\easylogsAPI.Resources\easylogsAPI.Resources.csproj" />
       <ProjectReference Include="..\easylogsAPI.Shared\easylogsAPI.Shared.csproj" />
     </ItemGroup>
 
