@@ -11,12 +11,35 @@
       <ProjectReference Include="..\easylogsAPI.Dto\easylogsAPI.Dto.csproj" />
       <ProjectReference Include="..\easylogsAPI.Mapping\easylogsAPI.Mapping.csproj" />
       <ProjectReference Include="..\easylogsAPI.Models\easylogsAPI.Models.csproj" />
-      <ProjectReference Include="..\easylogsAPI.Resources\easylogsAPI.Resources.csproj" />
       <ProjectReference Include="..\easylogsAPI.Shared\easylogsAPI.Shared.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Resources\Services\UserService.en-US.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>UserService.en-US.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Services\UserService.es-ES.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>UserService.es-ES.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Resources\Services\UserService.en-US.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>UserService.en-US.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Services\UserService.es-ES.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>UserService.es-ES.resx</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 </Project>

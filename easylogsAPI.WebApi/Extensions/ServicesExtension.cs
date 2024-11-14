@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Globalization;
+using System.Text;
 using easylogsAPI.Application.Helpers;
 using easylogsAPI.Application.Interfaces.Helpers;
 using easylogsAPI.Application.Interfaces.Services;
@@ -11,6 +12,7 @@ using easylogsAPI.Mapping;
 using easylogsAPI.Shared.Consts;
 using easylogsAPI.WebApi.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -153,12 +155,23 @@ public static class ServicesExtension
         // Helpers
         services.AddScoped<IToken, Token>();
 
-        services.AddLocalization(options => options.ResourcesPath = "Resources");
-        
         // Controllers
-        services.AddControllers()
-            .AddDataAnnotationsLocalization()
-            .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
+        services.AddControllers();
+        
+        // Localization
+        services.AddLocalization(options => options.ResourcesPath = "Resources");
+        var supportedCultures = new List<CultureInfo>
+        {
+            new ("en-US"),
+            new ("es-ES")
+        };
+        
+        services.Configure<RequestLocalizationOptions>(options =>
+        {
+            options.DefaultRequestCulture = new RequestCulture("en-US");
+            options.SupportedCultures = supportedCultures;
+            options.SupportedUICultures = supportedCultures;
+        });
         
         // First user creation
         var userRepository = services.BuildServiceProvider().GetRequiredService<IUserRepository>();

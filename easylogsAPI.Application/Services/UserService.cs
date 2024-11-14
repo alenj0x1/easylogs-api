@@ -16,7 +16,7 @@ using Microsoft.Extensions.Logging;
 
 namespace easylogsAPI.Application.Services;
 
-public class UserService(IAppRepository appRepository, IUserRepository userRepository, IUserPermissionRepository userPermissionRepository, ITokenRepository tokenRepository, IMapper mapper, ILogger<IUserService> logger, IStringLocalizer<IUserService> localizer) : IUserService
+public class UserService(IAppRepository appRepository, IUserRepository userRepository, IUserPermissionRepository userPermissionRepository, ITokenRepository tokenRepository, IMapper mapper, ILogger<UserService> logger, IStringLocalizer<UserService> localizer) : IUserService
 {
     private readonly IAppRepository _appRepository = appRepository;
     private readonly IUserRepository _userRepository = userRepository;
@@ -24,7 +24,7 @@ public class UserService(IAppRepository appRepository, IUserRepository userRepos
     private readonly ITokenRepository _tokenRepository = tokenRepository;
     private readonly IMapper _mapper = mapper;
     private readonly ILogger<IUserService> _logger = logger;
-    private readonly IStringLocalizer<IUserService> _localizer = localizer;
+    private readonly IStringLocalizer<UserService> _localizer = localizer;
     private readonly ServiceData _serviceData = new ServiceData();
     
     public async Task<BaseResponse<UserDto>> Create(Claim userIdClaim, CreateUserRequest request)
@@ -60,7 +60,7 @@ public class UserService(IAppRepository appRepository, IUserRepository userRepos
             
             var mp = _mapper.Map<UserDto>(crt);
 
-            return _serviceData.CreateResponse(mp, _localizer["UserCreated"], 201);
+            return _serviceData.CreateResponse(mp, _localizer["UserCreatedCorrectly"], 201);
         }
         catch (Exception e)
         {

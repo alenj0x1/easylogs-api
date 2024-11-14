@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace easylogsAPI.Resources.Resources {
+namespace easylogsAPI.Application.Resources.Services {
     using System;
     
     
@@ -21,14 +21,14 @@ namespace easylogsAPI.Resources.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Strings_en_US {
+    internal class UserService_es_ES {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Strings_en_US() {
+        internal UserService_es_ES() {
         }
         
         /// <summary>
@@ -38,7 +38,7 @@ namespace easylogsAPI.Resources.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("easylogsAPI.Resources.Resources.Strings.en-US", typeof(Strings_en_US).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("easylogsAPI.Application.Resources.Services.UserService.es-ES", typeof(UserService_es_ES).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -60,11 +60,11 @@ namespace easylogsAPI.Resources.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to User created correctly.
+        ///   Looks up a localized string similar to Usuario creado correctamente.
         /// </summary>
-        internal static string UserCreated {
+        internal static string UserCreatedCorrectly {
             get {
-                return ResourceManager.GetString("UserCreated", resourceCulture);
+                return ResourceManager.GetString("UserCreatedCorrectly", resourceCulture);
             }
         }
     }
