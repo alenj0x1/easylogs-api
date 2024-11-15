@@ -10,6 +10,14 @@
 			"name": "app",
 			"item": [
 				{
+					"name": "get app info",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
 					"name": "get permissions",
 					"request": {
 						"method": "GET",
@@ -80,6 +88,22 @@
 								"1"
 							]
 						}
+					},
+					"response": []
+				},
+				{
+					"name": "get session types",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "get session type by id",
+					"request": {
+						"method": "GET",
+						"header": []
 					},
 					"response": []
 				}
@@ -232,13 +256,14 @@
 						"header": [
 							{
 								"key": "Accept-Language",
-								"value": "ko-kr",
-								"type": "text"
+								"value": "",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"username\": \"acc\",\r\n  \"email\": \"acc@example.com\",\r\n  \"password\": \"acc\",\r\n  \"permissions\": [2]\r\n}",
+							"raw": "{\r\n  \"username\": \"test\",\r\n  \"email\": \"test@example.com\",\r\n  \"password\": \"test\",\r\n  \"permissions\": [1, 2, 3, 4, 5]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -253,6 +278,34 @@
 							"path": [
 								"user",
 								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "me",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/user/me",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"me"
 							]
 						}
 					},

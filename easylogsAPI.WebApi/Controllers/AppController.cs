@@ -13,7 +13,21 @@ public class AppController(IAppService appService, ILogger<AppController> logger
 {
     private readonly IAppService _appService = appService;
     private readonly ILogger<AppController> _logger = logger;
-    
+
+    [HttpGet("info")]
+    public BaseResponse<AppInfoDto> GetAppInfo()
+    {
+        try
+        {
+            return _appService.GetAppInfo();;
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "{Class}:{Method}:{Message}", GetType().Name, MethodBase.GetCurrentMethod()?.Name, e.Message);
+            throw;
+        }
+    }
+
     [HttpGet("permissions")]
     public BaseResponse<List<PermissionDto>> GetPermissions()
     {
@@ -62,6 +76,34 @@ public class AppController(IAppService appService, ILogger<AppController> logger
         try
         {
             return _appService.GetLogtype(logtypeId);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "{Class}:{Method}:{Message}", GetType().Name, MethodBase.GetCurrentMethod()?.Name, e.Message);
+            throw;
+        }
+    }
+
+    [HttpGet("sessionTypes")]
+    public BaseResponse<List<SessionTypeDto>> GetSessionTypes()
+    {
+        try
+        {
+            return _appService.GetSessionTypes();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "{Class}:{Method}:{Message}", GetType().Name, MethodBase.GetCurrentMethod()?.Name, e.Message);
+            throw;
+        }
+    }
+
+    [HttpGet("sessionTypes/{sessionTypeId:int}")]
+    public BaseResponse<SessionTypeDto> GetSessionType(int sessionTypeId)
+    {
+        try
+        {
+            return _appService.GetSessionType(sessionTypeId);
         }
         catch (Exception e)
         {
