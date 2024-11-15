@@ -31,10 +31,15 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors();
+
+app.UseMiddleware<ErrorHandlerMiddleware>();
+
+app.UseMiddleware<ApiKeyMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.UseMiddleware<PermissionMiddleware>();
-app.UseMiddleware<ErrorHandlerMiddleware>();
+
 app.UseRequestLocalization();
 
 app.MapControllers();

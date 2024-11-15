@@ -6,9 +6,9 @@ using Microsoft.Extensions.Logging;
 
 namespace easylogsAPI.Domain.Repositories;
 
-public class AppRepository(EasylogsDbContext easylogsDbContext, ILogger<IAppRepository> logger) : IAppRepository
+public class AppRepository(EasyLogsDbContext easylogsDbContext, ILogger<IAppRepository> logger) : IAppRepository
 {
-    private readonly EasylogsDbContext _db = easylogsDbContext;
+    private readonly EasyLogsDbContext _db = easylogsDbContext;
     private readonly ILogger<IAppRepository> _logger = logger;
     
     public List<Permission> GetPermissions()
@@ -42,6 +42,32 @@ public class AppRepository(EasylogsDbContext easylogsDbContext, ILogger<IAppRepo
         try
         {
             return [.. _db.Logtypes];
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e,  "{Class}:{Method}:{Message}", GetType().Name, MethodBase.GetCurrentMethod()?.Name, e.Message);
+            throw;
+        }
+    }
+
+    public Sessiontype? GetSessiontype(int sessionTypeId)
+    {
+        try
+        {
+            return _db.Sessiontypes.FirstOrDefault(st => st.SessionTypeId == sessionTypeId);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e,  "{Class}:{Method}:{Message}", GetType().Name, MethodBase.GetCurrentMethod()?.Name, e.Message);
+            throw;
+        }
+    }
+
+    public List<Sessiontype> GetSessiontypes()
+    {
+        try
+        {
+            return [.. _db.Sessiontypes];
         }
         catch (Exception e)
         {

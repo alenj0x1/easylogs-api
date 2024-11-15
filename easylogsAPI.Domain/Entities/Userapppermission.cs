@@ -7,7 +7,7 @@ public partial class Userapppermission
 {
     public int UserAppPermissionId { get; set; }
 
-    public Guid Userid { get; set; }
+    public Guid UserAppId { get; set; }
 
     public int PermissionId { get; set; }
 
@@ -15,5 +15,5 @@ public partial class Userapppermission
 
     public virtual Permission Permission { get; set; } = null!;
 
-    public virtual Userapp User { get; set; } = null!;
+    public virtual Userapp UserApp { get; set; } = null!;
 }

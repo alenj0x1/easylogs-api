@@ -11,6 +11,8 @@ public partial class Tokenrefresh
 
     public string Ip { get; set; } = null!;
 
+    public bool IsApiKey { get; set; }
+
     public string Value { get; set; } = null!;
 
     public DateTime CreatedAt { get; set; }

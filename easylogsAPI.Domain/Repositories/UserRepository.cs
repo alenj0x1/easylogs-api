@@ -6,9 +6,9 @@ using Microsoft.Extensions.Logging;
 
 namespace easylogsAPI.Domain.Repositories;
 
-public class UserRepository(EasylogsDbContext easylogsDbContext, ILogger<IAppRepository> logger) : IUserRepository
+public class UserRepository(EasyLogsDbContext easylogsDbContext, ILogger<IAppRepository> logger) : IUserRepository
 {
-    private readonly EasylogsDbContext _ctx = easylogsDbContext;
+    private readonly EasyLogsDbContext _ctx = easylogsDbContext;
     private readonly ILogger<IAppRepository> _logger = logger;
     
     public async Task<Userapp> Create(Userapp userapp)
@@ -70,7 +70,7 @@ public class UserRepository(EasylogsDbContext easylogsDbContext, ILogger<IAppRep
     {
         try
         {
-            return [.. _ctx.Userapppermissions.Where(usrp => usrp.Userid == userapp.UserAppId)];
+            return [.. _ctx.Userapppermissions.Where(usrp => usrp.UserAppId == userapp.UserAppId)];
         }
         catch (Exception e)
         {

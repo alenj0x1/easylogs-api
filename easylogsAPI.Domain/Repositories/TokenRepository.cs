@@ -6,22 +6,15 @@ using Microsoft.Extensions.Logging;
 
 namespace easylogsAPI.Domain.Repositories;
 
-public class TokenRepository(EasylogsDbContext easylogsDbContext, ILogger<ITokenRepository> logger) : ITokenRepository
+public class TokenRepository(EasyLogsDbContext easylogsDbContext, ILogger<ITokenRepository> logger) : ITokenRepository
 {
-    private readonly EasylogsDbContext _ctx = easylogsDbContext;
+    private readonly EasyLogsDbContext _ctx = easylogsDbContext;
     private readonly ILogger<ITokenRepository> _logger = logger;
     
     public async Task<Tokenaccess> CreateTokenAccess(Tokenaccess tokenAccess)
     {
         try
         {
-            var gtTokenAccess = GetTokenAccess(tokenAccess.UserAppId);
-            if (gtTokenAccess is not null)
-            {
-                var delTokenAccess = await DeleteTokenAccess(gtTokenAccess);
-                if (!delTokenAccess) throw new Exception("previously token access not was deleted");
-            }
-            
             await _ctx.Tokenaccesses.AddAsync(tokenAccess);
             await _ctx.SaveChangesAsync();
             
@@ -38,8 +31,10 @@ public class TokenRepository(EasylogsDbContext easylogsDbContext, ILogger<IToken
     {
         try
         {
-            var gtTokenRefresh = GetTokenRefresh(tokenRefresh.UserAppId);
-            if (gtTokenRefresh is not null)
+            var gtTokenRefresh = GetTokenRefresh(tokenRefresh.UserAppId, tokenRefresh.IsApiKey);
+            
+            if (gtTokenRefresh is not null && gtTokenRefresh.IsApiKey == tokenRefresh.IsApiKey || 
+                gtTokenRefresh is not null && !gtTokenRefresh.IsApiKey && !tokenRefresh.IsApiKey)
             {
                 var delTokenRefresh = await DeleteTokenRefresh(gtTokenRefresh);
                 if (!delTokenRefresh) throw new Exception("previously token refresh not was deleted");
@@ -82,6 +77,19 @@ public class TokenRepository(EasylogsDbContext easylogsDbContext, ILogger<IToken
             throw;
         }
     }
+    
+    private Tokenaccess? GetTokenAccess(Guid userId, bool isApiKey)
+    {
+        try
+        {
+            return _ctx.Tokenaccesses.FirstOrDefault(tkacc => tkacc.UserAppId == userId && tkacc.IsApiKey == isApiKey);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e,  "{Class}:{Method}:{Message}", GetType().Name, MethodBase.GetCurrentMethod()?.Name, e.Message);
+            throw;
+        }
+    }
 
     public Tokenrefresh? GetTokenRefresh(string value)
     {
@@ -101,6 +109,19 @@ public class TokenRepository(EasylogsDbContext easylogsDbContext, ILogger<IToken
         try
         {
             return _ctx.Tokenrefreshes.FirstOrDefault(tkrf => tkrf.UserAppId == userId);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e,  "{Class}:{Method}:{Message}", GetType().Name, MethodBase.GetCurrentMethod()?.Name, e.Message);
+            throw;
+        }
+    }
+    
+    private Tokenrefresh? GetTokenRefresh(Guid userId, bool isApiKey)
+    {
+        try
+        {
+            return _ctx.Tokenrefreshes.FirstOrDefault(tkrf => tkrf.UserAppId == userId && tkrf.IsApiKey == isApiKey);
         }
         catch (Exception e)
         {
@@ -131,7 +152,7 @@ public class TokenRepository(EasylogsDbContext easylogsDbContext, ILogger<IToken
         {
             _ctx.Tokenrefreshes.Remove(tokenrefresh);
 
-            var tokenAccess = GetTokenAccess(tokenrefresh.UserAppId); // <- verify token access created
+            var tokenAccess = GetTokenAccess(tokenrefresh.UserAppId, tokenrefresh.IsApiKey); // <- verify token access created
             if (tokenAccess is not null)
             {
                 await DeleteTokenAccess(tokenAccess);

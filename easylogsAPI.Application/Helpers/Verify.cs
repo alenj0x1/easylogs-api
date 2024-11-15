@@ -26,8 +26,8 @@ public static class Verify
             await userPermissionRepository.Create(new Userapppermission
             {
                 PermissionId = PermissionConsts.Administrator,
-                Userid = usr.UserAppId,
-                GivenAt = DateTime.UtcNow
+                UserAppId = usr.UserAppId,
+                GivenAt = DateTime.UtcNow,
             });
             return true;
         }

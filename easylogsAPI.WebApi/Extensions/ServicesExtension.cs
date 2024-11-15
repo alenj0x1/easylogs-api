@@ -98,6 +98,11 @@ public static class ServicesExtension
                         context.Fail(ResponseConsts.TokenNotFound);
                         return;
                     }
+
+                    if (tkAccess.IsApiKey && !ApiKeyConsts.AllowedPaths.Contains(context.HttpContext.Request.Path.Value))
+                    {
+                        context.Fail(ResponseConsts.TokenNotFound);
+                    }
                     
                     var tkRefresh = tokenRepository.GetTokenRefresh(tkAccess.UserAppId);; // <- define token refresh, for delete cases
                     
@@ -107,6 +112,7 @@ public static class ServicesExtension
                         context.Fail(ResponseConsts.TokenExpired);
                     }
 
+                    if (tkAccess.Ip == "ignore_validation") return;
                     if (tkAccess.Ip != context.HttpContext.Connection.RemoteIpAddress?.ToString()) // <- check ip address
                     {
                         if (tkRefresh is not null) await tokenRepository.DeleteTokenRefresh(tkRefresh);
@@ -127,7 +133,7 @@ public static class ServicesExtension
         services.AddAuthorization();
         
         // Database
-        services.AddDbContext<EasylogsDbContext>(builder =>
+        services.AddDbContext<EasyLogsDbContext>(builder =>
         {
             builder.UseNpgsql(configuration.GetConnectionString("postgres") ?? throw new Exception(ResponseConsts.ConfigurationMissingPostgresConnectionString));
         });
@@ -136,8 +142,9 @@ public static class ServicesExtension
         services.AddAutoMapper(typeof(MappingProfile));
         
         // Middlewares
-        services.AddScoped(typeof(PermissionMiddleware));
         services.AddScoped(typeof(ErrorHandlerMiddleware));
+        services.AddScoped(typeof(ApiKeyMiddleware));
+        services.AddScoped(typeof(PermissionMiddleware));
         
         // Services
         services.AddScoped<IAppService, AppService>();

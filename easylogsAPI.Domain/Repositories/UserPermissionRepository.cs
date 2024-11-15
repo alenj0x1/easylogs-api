@@ -6,9 +6,9 @@ using Microsoft.Extensions.Logging;
 
 namespace easylogsAPI.Domain.Repositories;
 
-public class UserPermissionRepository(EasylogsDbContext easylogsDbContext, ILogger<IAppRepository> logger) : IUserPermissionRepository
+public class UserPermissionRepository(EasyLogsDbContext easylogsDbContext, ILogger<IAppRepository> logger) : IUserPermissionRepository
 {
-    private readonly EasylogsDbContext _ctx = easylogsDbContext;
+    private readonly EasyLogsDbContext _ctx = easylogsDbContext;
     private readonly ILogger<IAppRepository> _logger = logger;
     
     public async Task<Userapppermission> Create(Userapppermission userapppermission)

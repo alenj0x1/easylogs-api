@@ -8,9 +8,9 @@ namespace easylogsAPI.WebApi.Interfaces.Controllers;
 
 public interface IUserController
 {
-    Task<BaseResponse<UserDto>> Create([FromBody] CreateUserRequest request);
-    BaseResponse<UserDto> Get([FromQuery] Guid userappId);
-    BaseResponse<List<UserDto>> Get([FromBody] GetUsersRequest request);
-    Task<BaseResponse<UserDto>> Update([FromBody] UpdateUserRequest request, Guid userappId);
+    Task<BaseResponse<UserAppDto>> Create([FromBody] CreateUserRequest request);
+    BaseResponse<UserAppDto> Get([FromQuery] Guid userappId);
+    BaseResponse<List<UserAppDto>> Get([FromBody] GetUsersRequest request);
+    Task<BaseResponse<UserAppDto>> Update([FromBody] UpdateUserRequest request, Guid userappId);
     Task<BaseResponse<bool>> Delete(Guid userappId);
 }

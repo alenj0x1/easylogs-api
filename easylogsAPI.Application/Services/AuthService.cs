@@ -33,6 +33,38 @@ public class AuthService : IAuthService
         _logger = logger;
     }
 
+    public async Task<BaseResponse<LoginAuthResponse>> CreateAccessToken(HttpContext httpContext, CreateAccessTokenAuthRequest request)
+    {
+        try
+        {
+            var usr = _userRepository.Get(request.UserAppId) ?? throw new Exception("user id not found");
+            var expiration = Parser.ToDateTime(request.Expiration ?? "") ?? DateTime.UtcNow.AddYears(99);
+            
+            return _serviceData.CreateResponse(await CreateTokens(usr, expiration: expiration), "Token access created correctly");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    public async Task<BaseResponse<bool>> RemoveAccessToken(HttpContext httpContext, string accessToken)
+    {
+        try
+        {
+            var acc = _tokenRepository.GetTokenAccess(accessToken) ?? throw new Exception("Token access not found");
+            
+            await _tokenRepository.DeleteTokenRefresh(acc.TokenRefresh);
+            return _serviceData.CreateResponse(true, "Token access removed correctly");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
     public async Task<BaseResponse<LoginAuthResponse>> Login(HttpContext httpContext, LoginAuthRequest request)
     {
         try
@@ -65,7 +97,7 @@ public class AuthService : IAuthService
         }
     }
     
-    private async Task<LoginAuthResponse> CreateTokens(Userapp appuser, HttpContext httpContext)
+    private async Task<LoginAuthResponse> CreateTokens(Userapp appuser, HttpContext? httpContext = null, DateTime? expiration = null)
     {
         try
         {
@@ -84,8 +116,9 @@ public class AuthService : IAuthService
             {
                 Value = tkRefresh,
                 UserAppId = appuser.UserAppId,
-                Expiration = null, // <- for now
-                Ip = httpContext.Connection.RemoteIpAddress?.ToString() ?? "without_ip"
+                Expiration = expiration ?? (appuser.SessionTypeId == SessionTypeConsts.Infinity ? null : DateTime.UtcNow.AddDays(appuser.SessionTime)), // <- setted :)
+                IsApiKey = expiration is not null,
+                Ip = httpContext is null ? "ignore_validation" : httpContext.Connection.RemoteIpAddress?.ToString() ?? "ignore_validation"
             });
             
             var svTokenAccess = await _tokenRepository.CreateTokenAccess(new Tokenaccess()
@@ -94,7 +127,8 @@ public class AuthService : IAuthService
                 UserAppId = appuser.UserAppId,
                 Value = tkAccess.Value,
                 Expiration = tkExpiration,
-                Ip = httpContext.Connection.RemoteIpAddress?.ToString() ?? "without_ip"
+                IsApiKey = expiration is not null,
+                Ip = httpContext is null ? "ignore_validation" : httpContext.Connection.RemoteIpAddress?.ToString() ?? "ignore_validation"
             });
             
             return new LoginAuthResponse()

@@ -5,13 +5,13 @@ using easylogsAPI.Domain.Entities;
 
 namespace easylogsAPI.Domain.Context;
 
-public partial class EasylogsDbContext : DbContext
+public partial class EasyLogsDbContext : DbContext
 {
-    public EasylogsDbContext()
+    public EasyLogsDbContext()
     {
     }
 
-    public EasylogsDbContext(DbContextOptions<EasylogsDbContext> options)
+    public EasyLogsDbContext(DbContextOptions<EasyLogsDbContext> options)
         : base(options)
     {
     }
@@ -22,6 +22,8 @@ public partial class EasylogsDbContext : DbContext
 
     public virtual DbSet<Permission> Permissions { get; set; }
 
+    public virtual DbSet<Sessiontype> Sessiontypes { get; set; }
+
     public virtual DbSet<Tokenaccess> Tokenaccesses { get; set; }
 
     public virtual DbSet<Tokenrefresh> Tokenrefreshes { get; set; }
@@ -30,9 +32,7 @@ public partial class EasylogsDbContext : DbContext
 
     public virtual DbSet<Userapppermission> Userapppermissions { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseNpgsql("Host=localhost;Database=easylogs;User Id=postgres;Port=5432;Password=vmt1234");
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -110,6 +110,24 @@ public partial class EasylogsDbContext : DbContext
                 .HasColumnName("updated_at");
         });
 
+        modelBuilder.Entity<Sessiontype>(entity =>
+        {
+            entity.HasKey(e => e.SessionTypeId).HasName("sessiontype_pkey");
+
+            entity.ToTable("sessiontype");
+
+            entity.Property(e => e.SessionTypeId).HasColumnName("session_type_id");
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("now()")
+                .HasColumnName("created_at");
+            entity.Property(e => e.Name)
+                .HasMaxLength(100)
+                .HasColumnName("name");
+            entity.Property(e => e.UpdatedAt)
+                .HasDefaultValueSql("now()")
+                .HasColumnName("updated_at");
+        });
+
         modelBuilder.Entity<Tokenaccess>(entity =>
         {
             entity.HasKey(e => e.TokenAccessId).HasName("tokenaccess_pkey");
@@ -124,6 +142,9 @@ public partial class EasylogsDbContext : DbContext
             entity.Property(e => e.Ip)
                 .HasMaxLength(255)
                 .HasColumnName("ip");
+            entity.Property(e => e.IsApiKey)
+                .HasDefaultValue(false)
+                .HasColumnName("is_api_key");
             entity.Property(e => e.TokenRefreshId).HasColumnName("token_refresh_id");
             entity.Property(e => e.UserAppId).HasColumnName("user_app_id");
             entity.Property(e => e.Value).HasColumnName("value");
@@ -152,6 +173,9 @@ public partial class EasylogsDbContext : DbContext
             entity.Property(e => e.Ip)
                 .HasMaxLength(255)
                 .HasColumnName("ip");
+            entity.Property(e => e.IsApiKey)
+                .HasDefaultValue(false)
+                .HasColumnName("is_api_key");
             entity.Property(e => e.UserAppId).HasColumnName("user_app_id");
             entity.Property(e => e.Value).HasColumnName("value");
 
@@ -180,12 +204,23 @@ public partial class EasylogsDbContext : DbContext
             entity.Property(e => e.Password)
                 .HasMaxLength(255)
                 .HasColumnName("password");
+            entity.Property(e => e.SessionTime)
+                .HasDefaultValue(1)
+                .HasColumnName("session_time");
+            entity.Property(e => e.SessionTypeId)
+                .HasDefaultValue(1)
+                .HasColumnName("session_type_id");
             entity.Property(e => e.UpdatedAt)
                 .HasDefaultValueSql("now()")
                 .HasColumnName("updated_at");
             entity.Property(e => e.Username)
                 .HasMaxLength(100)
                 .HasColumnName("username");
+
+            entity.HasOne(d => d.SessionType).WithMany(p => p.Userapps)
+                .HasForeignKey(d => d.SessionTypeId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("userapp_session_type_id_fkey");
         });
 
         modelBuilder.Entity<Userapppermission>(entity =>
@@ -199,17 +234,17 @@ public partial class EasylogsDbContext : DbContext
                 .HasDefaultValueSql("now()")
                 .HasColumnName("given_at");
             entity.Property(e => e.PermissionId).HasColumnName("permission_id");
-            entity.Property(e => e.Userid).HasColumnName("userid");
+            entity.Property(e => e.UserAppId).HasColumnName("user_app_id");
 
             entity.HasOne(d => d.Permission).WithMany(p => p.Userapppermissions)
                 .HasForeignKey(d => d.PermissionId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("userapppermission_permission_id_fkey");
 
-            entity.HasOne(d => d.User).WithMany(p => p.Userapppermissions)
-                .HasForeignKey(d => d.Userid)
+            entity.HasOne(d => d.UserApp).WithMany(p => p.Userapppermissions)
+                .HasForeignKey(d => d.UserAppId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("userapppermission_userid_fkey");
+                .HasConstraintName("userapppermission_user_app_id_fkey");
         });
 
         OnModelCreatingPartial(modelBuilder);

@@ -21,7 +21,7 @@ public class UserController(IUserService userService, ILogger<UserController> lo
     [HttpPost("create")]
     [Permission("CREATE_USERS")]
     [Authorize]
-    public Task<BaseResponse<UserDto>> Create(CreateUserRequest request)
+    public Task<BaseResponse<UserAppDto>> Create(CreateUserRequest request)
     {
         try
         {
@@ -38,7 +38,7 @@ public class UserController(IUserService userService, ILogger<UserController> lo
 
     [HttpGet("{userappId:guid}")]
     [Authorize]
-    public BaseResponse<UserDto> Get(Guid userappId)
+    public BaseResponse<UserAppDto> Get(Guid userappId)
     {
         try
         {
@@ -54,7 +54,7 @@ public class UserController(IUserService userService, ILogger<UserController> lo
 
     [HttpPost]
     [Authorize]
-    public BaseResponse<List<UserDto>> Get([FromBody] GetUsersRequest request)
+    public BaseResponse<List<UserAppDto>> Get([FromBody] GetUsersRequest request)
     {
         try
         {
@@ -70,7 +70,7 @@ public class UserController(IUserService userService, ILogger<UserController> lo
     [HttpPut("update/{userappId:guid}")]
     [Permission("UPDATE_USERS")]
     [Authorize]
-    public Task<BaseResponse<UserDto>> Update([FromBody] UpdateUserRequest request, Guid userappId)
+    public Task<BaseResponse<UserAppDto>> Update([FromBody] UpdateUserRequest request, Guid userappId)
     {
         try
         {

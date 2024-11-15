@@ -13,11 +13,17 @@ public partial class Userapp
 
     public string Password { get; set; } = null!;
 
+    public int SessionTypeId { get; set; }
+
+    public int SessionTime { get; set; }
+
     public DateTime CreatedAt { get; set; }
 
     public DateTime UpdatedAt { get; set; }
 
     public DateTime? DeletedAt { get; set; }
+
+    public virtual Sessiontype SessionType { get; set; } = null!;
 
     public virtual ICollection<Tokenaccess> Tokenaccesses { get; set; } = new List<Tokenaccess>();
 

@@ -6,9 +6,9 @@ using Microsoft.Extensions.Logging;
 
 namespace easylogsAPI.Domain.Repositories;
 
-public class LogRepository(EasylogsDbContext easylogsDbContext, ILogger<IAppRepository> logger) : ILogRepository
+public class LogRepository(EasyLogsDbContext easylogsDbContext, ILogger<IAppRepository> logger) : ILogRepository
 {
-    private readonly EasylogsDbContext _ctx = easylogsDbContext;
+    private readonly EasyLogsDbContext _ctx = easylogsDbContext;
     private readonly ILogger _logger = logger;
     
     public async Task<Log> Create(Log log)

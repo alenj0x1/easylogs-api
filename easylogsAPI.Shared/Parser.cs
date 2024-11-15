@@ -35,7 +35,7 @@ public static class Parser
         {
             return DateTime.Parse(value, CultureInfo.InvariantCulture);
         }
-        catch (Exception e)
+        catch (Exception)
         {
             return null;
         }

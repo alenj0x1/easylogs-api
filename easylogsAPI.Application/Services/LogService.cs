@@ -26,7 +26,7 @@ public class LogService(ILogRepository logRepository, IAppRepository appReposito
         try
         {
             if (_appRepository.GetLogtype(request.Type) is null) throw new ApplicationException("log type is invalid");
-
+            
             var crt = await _logRepository.Create(new Log
             {
                 Message = request.Message,
