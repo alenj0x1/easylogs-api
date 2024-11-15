@@ -5,7 +5,6 @@ using easylogsAPI.Application.Interfaces.Helpers;
 using easylogsAPI.Application.Interfaces.Services;
 using easylogsAPI.Application.Services;
 using easylogsAPI.Domain.Context;
-using easylogsAPI.Domain.Entities;
 using easylogsAPI.Domain.Interfaces.Repositories;
 using easylogsAPI.Domain.Repositories;
 using easylogsAPI.Mapping;
@@ -13,7 +12,6 @@ using easylogsAPI.Shared.Consts;
 using easylogsAPI.WebApi.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -104,7 +102,7 @@ public static class ServicesExtension
                         context.Fail(ResponseConsts.TokenNotFound);
                     }
                     
-                    var tkRefresh = tokenRepository.GetTokenRefresh(tkAccess.UserAppId);; // <- define token refresh, for delete cases
+                    var tkRefresh = tokenRepository.GetTokenRefresh(tkAccess.UserAppId); // <- define token refresh, for delete cases
                     
                     if (DateTime.Now.CompareTo(tkAccess.Expiration) >= 0) // <- check expiration
                     {
@@ -176,7 +174,7 @@ public static class ServicesExtension
         
         services.Configure<RequestLocalizationOptions>(options =>
         {
-            options.DefaultRequestCulture = new RequestCulture("en-US");
+            options.DefaultRequestCulture = new RequestCulture(configuration["DefaultLocalization"] ?? "en-US");
             options.SupportedCultures = supportedCultures;
             options.SupportedUICultures = supportedCultures;
         });

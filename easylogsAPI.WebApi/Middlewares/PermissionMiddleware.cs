@@ -1,12 +1,9 @@
-﻿using System.Reflection;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using easylogsAPI.Domain.Entities;
 using easylogsAPI.Domain.Interfaces.Repositories;
-using easylogsAPI.Models.Responses;
 using easylogsAPI.Shared;
 using easylogsAPI.Shared.Consts;
 using easylogsAPI.WebApi.Attributes;
-using Microsoft.AspNetCore.Mvc.Controllers;
 
 namespace easylogsAPI.WebApi.Middlewares;
 
@@ -35,7 +32,6 @@ public class PermissionMiddleware(
                 if (usrPerms.Any(usrp => usrp.PermissionId == PermissionConsts.Administrator)) // <- administrator
                 {
                     await next(context);
-                    return;
                 }
                 
                 var perms = _appRepository.GetPermissions().Where(prm => attr.Values.Split(',').Contains(prm.Name)).ToList();
@@ -57,20 +53,11 @@ public class PermissionMiddleware(
 
             await next(context);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            const int status = 401;
-            var rsp = new BaseResponse<string>()
-            {
-                Ok = false,
-                StatusCode = status,
-                StatusCodeCat = Parser.StatusCodeToCat(status),
-                Message = e.Message
-            };
-
             _logger.LogInformation("{Method} {StatusCode} {NameIdentifier}", context.Request.Method,
                 context.Response.StatusCode, context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            await context.Response.WriteAsJsonAsync(rsp);
+            throw;
         }
     }
 }

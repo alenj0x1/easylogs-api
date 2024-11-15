@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using easylogsAPI.Application.Interfaces.Services;
 using easylogsAPI.Dto;
-using easylogsAPI.Models.Requests;
 using easylogsAPI.Models.Requests.Log;
 using easylogsAPI.Models.Responses;
 using easylogsAPI.WebApi.Attributes;

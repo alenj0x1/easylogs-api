@@ -23,7 +23,7 @@ public static class Parser
         {
             return Guid.Parse(value);
         }
-        catch (Exception e)
+        catch (Exception)
         {
             return Guid.Empty;
         }

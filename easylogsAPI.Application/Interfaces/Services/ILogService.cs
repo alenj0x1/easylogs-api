@@ -1,5 +1,4 @@
 ﻿using easylogsAPI.Dto;
-using easylogsAPI.Models.Requests;
 using easylogsAPI.Models.Requests.Log;
 using easylogsAPI.Models.Responses;
 

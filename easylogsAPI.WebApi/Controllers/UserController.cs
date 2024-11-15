@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using easylogsAPI.Application.Interfaces.Services;
 using easylogsAPI.Dto;
-using easylogsAPI.Models.Requests;
 using easylogsAPI.Models.Requests.User;
 using easylogsAPI.Models.Responses;
 using easylogsAPI.WebApi.Attributes;
@@ -21,7 +20,7 @@ public class UserController(IUserService userService, ILogger<UserController> lo
     [HttpPost("create")]
     [Permission("CREATE_USERS")]
     [Authorize]
-    public Task<BaseResponse<UserAppDto>> Create(CreateUserRequest request)
+    public Task<BaseResponse<UserAppDefaultDto>> Create(CreateUserRequest request)
     {
         try
         {
@@ -36,9 +35,26 @@ public class UserController(IUserService userService, ILogger<UserController> lo
         }
     }
 
+    [HttpGet("me")]
+    [Authorize]
+    public BaseResponse<UserAppMeDto> Me()
+    {
+        try
+        {
+            var claim = User.FindFirst("UserId") ?? throw new Exception("token not found");
+            return _userService.Me(claim);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "{Class}:{Method}:{Message}", GetType().Name, MethodBase.GetCurrentMethod()?.Name,
+                e.Message);
+            throw;
+        }
+    }
+
     [HttpGet("{userappId:guid}")]
     [Authorize]
-    public BaseResponse<UserAppDto> Get(Guid userappId)
+    public BaseResponse<UserAppDefaultDto> Get(Guid userappId)
     {
         try
         {
@@ -54,7 +70,7 @@ public class UserController(IUserService userService, ILogger<UserController> lo
 
     [HttpPost]
     [Authorize]
-    public BaseResponse<List<UserAppDto>> Get([FromBody] GetUsersRequest request)
+    public BaseResponse<List<UserAppDefaultDto>> Get([FromBody] GetUsersRequest request)
     {
         try
         {
@@ -70,7 +86,7 @@ public class UserController(IUserService userService, ILogger<UserController> lo
     [HttpPut("update/{userappId:guid}")]
     [Permission("UPDATE_USERS")]
     [Authorize]
-    public Task<BaseResponse<UserAppDto>> Update([FromBody] UpdateUserRequest request, Guid userappId)
+    public Task<BaseResponse<UserAppDefaultDto>> Update([FromBody] UpdateUserRequest request, Guid userappId)
     {
         try
         {

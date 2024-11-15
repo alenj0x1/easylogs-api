@@ -1,5 +1,4 @@
-﻿using easylogsAPI.Application.Helpers;
-using easylogsAPI.Domain.Interfaces.Repositories;
+﻿using easylogsAPI.Domain.Interfaces.Repositories;
 using easylogsAPI.Shared.Consts;
 
 namespace easylogsAPI.WebApi.Middlewares;

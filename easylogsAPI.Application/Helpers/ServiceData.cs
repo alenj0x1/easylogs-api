@@ -8,7 +8,7 @@ public class ServiceData
     private const int DefaultStatusCode = 200;
     private static readonly List<int> SuccessStatusCodes = [200, 201, 204];
 
-    public BaseResponse<T> CreateResponse<T>(T data, string? message = DefaultMessage, int? statusCode = DefaultStatusCode)
+    public BaseResponse<T> CreateResponse<T>(T data, string? message = DefaultMessage, int? statusCode = DefaultStatusCode, int? count = 0)
     {
         var status = statusCode ?? DefaultStatusCode;
         var crtResponse = new BaseResponse<T>()
@@ -18,6 +18,7 @@ public class ServiceData
             StatusCode = status,
             StatusCodeCat = $"https://http.cat/{status}",
             Data = data,
+            Count = count ?? 0
         };
         
         return crtResponse;

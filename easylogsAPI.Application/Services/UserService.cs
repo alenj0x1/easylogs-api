@@ -6,7 +6,6 @@ using easylogsAPI.Application.Interfaces.Services;
 using easylogsAPI.Domain.Entities;
 using easylogsAPI.Domain.Interfaces.Repositories;
 using easylogsAPI.Dto;
-using easylogsAPI.Models.Requests;
 using easylogsAPI.Models.Requests.User;
 using easylogsAPI.Models.Responses;
 using easylogsAPI.Shared;
@@ -16,18 +15,17 @@ using Microsoft.Extensions.Logging;
 
 namespace easylogsAPI.Application.Services;
 
-public class UserService(IAppRepository appRepository, IUserRepository userRepository, IUserPermissionRepository userPermissionRepository, ITokenRepository tokenRepository, IMapper mapper, ILogger<UserService> logger, IStringLocalizer<UserService> localizer) : IUserService
+public class UserService(IAppRepository appRepository, IUserRepository userRepository, IUserPermissionRepository userPermissionRepository, IMapper mapper, ILogger<UserService> logger, IStringLocalizer<UserService> localizer) : IUserService
 {
     private readonly IAppRepository _appRepository = appRepository;
     private readonly IUserRepository _userRepository = userRepository;
     private readonly IUserPermissionRepository _userPermissionRepository = userPermissionRepository;
-    private readonly ITokenRepository _tokenRepository = tokenRepository;
     private readonly IMapper _mapper = mapper;
     private readonly ILogger<IUserService> _logger = logger;
     private readonly IStringLocalizer<UserService> _localizer = localizer;
     private readonly ServiceData _serviceData = new ServiceData();
     
-    public async Task<BaseResponse<UserAppDto>> Create(Claim userIdClaim, CreateUserRequest request)
+    public async Task<BaseResponse<UserAppDefaultDto>> Create(Claim userIdClaim, CreateUserRequest request)
     {
         try
         {
@@ -57,12 +55,11 @@ public class UserService(IAppRepository appRepository, IUserRepository userRepos
                 });
             }
             
-            var mp = _mapper.Map<UserAppDto>(crt);
+            var mp = _mapper.Map<UserAppDefaultDto>(crt);
             
             mp.Permissions = _mapper.Map<List<UserAppPermissionDto>>(_userRepository.GetPermissions(crt));
-            mp.SessionType = _mapper.Map<SessionTypeDto>(_appRepository.GetSessiontype(crt.SessionTypeId));
 
-            return _serviceData.CreateResponse(mp, _localizer["UserCreated"], 201);
+            return _serviceData.CreateResponse(mp, _localizer["UserCreated"], 201, count: _userRepository.Get().Count());
         }
         catch (Exception e)
         {
@@ -71,17 +68,35 @@ public class UserService(IAppRepository appRepository, IUserRepository userRepos
         }
     }
 
-    public BaseResponse<UserAppDto> Get(Guid userappId)
+    public BaseResponse<UserAppMeDto> Me(Claim userIdClaim)
+    {
+        try
+        {
+            var cru = _userRepository.Get(Parser.ToGuid(userIdClaim.Value)) ?? throw new Exception(_localizer["IdentityValidationFailed"]);
+            var mp = _mapper.Map<UserAppMeDto>(cru);
+            
+            mp.Permissions = _mapper.Map<List<UserAppPermissionDto>>(_userRepository.GetPermissions(cru));
+            mp.SessionType = _mapper.Map<SessionTypeDto>(_appRepository.GetSessiontype(cru.SessionTypeId));
+
+            return _serviceData.CreateResponse(mp);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    public BaseResponse<UserAppDefaultDto> Get(Guid userappId)
     {
         try
         {
             var dt = _userRepository.Get(userappId);
-            var mp = _mapper.Map<UserAppDto>(dt);
+            var mp = _mapper.Map<UserAppDefaultDto>(dt);
 
             if (dt is null) return _serviceData.CreateResponse(mp);
             
             mp.Permissions = _mapper.Map<List<UserAppPermissionDto>>(_userRepository.GetPermissions(dt));
-            mp.SessionType = _mapper.Map<SessionTypeDto>(_appRepository.GetSessiontype(dt.SessionTypeId));
 
             return _serviceData.CreateResponse(mp);
         }
@@ -92,7 +107,7 @@ public class UserService(IAppRepository appRepository, IUserRepository userRepos
         }
     }
 
-    public BaseResponse<List<UserAppDto>> Get(GetUsersRequest request)
+    public BaseResponse<List<UserAppDefaultDto>> Get(GetUsersRequest request)
     {
         try
         {
@@ -126,18 +141,17 @@ public class UserService(IAppRepository appRepository, IUserRepository userRepos
             
             var listUsr = gt.Skip(request.Offset).Take(request.Limit).ToList();
             
-            List<UserAppDto> listMp = [];
+            List<UserAppDefaultDto> listMp = [];
             foreach (var usr in listUsr)
             {
-                var mp = _mapper.Map<UserAppDto>(usr);
+                var mp = _mapper.Map<UserAppDefaultDto>(usr);
                 
                 mp.Permissions = _mapper.Map<List<UserAppPermissionDto>>(_userRepository.GetPermissions(usr));
-                mp.SessionType = _mapper.Map<SessionTypeDto>(_appRepository.GetSessiontype(usr.SessionTypeId));
                 
                 listMp.Add(mp);
             }
 
-            return _serviceData.CreateResponse(listMp);
+            return _serviceData.CreateResponse(listMp, count: _userRepository.Get().Count());
         }
         catch (Exception e)
         {
@@ -146,7 +160,7 @@ public class UserService(IAppRepository appRepository, IUserRepository userRepos
         }
     }
 
-    public async Task<BaseResponse<UserAppDto>> Update(Claim userIdClaim, UpdateUserRequest request, Guid userappId)
+    public async Task<BaseResponse<UserAppDefaultDto>> Update(Claim userIdClaim, UpdateUserRequest request, Guid userappId)
     {
         try
         {
@@ -181,12 +195,11 @@ public class UserService(IAppRepository appRepository, IUserRepository userRepos
             }
             
             var upd = await _userRepository.Update(gt);
-            var mp = _mapper.Map<UserAppDto>(upd);
+            var mp = _mapper.Map<UserAppDefaultDto>(upd);
             
             mp.Permissions = _mapper.Map<List<UserAppPermissionDto>>(_userRepository.GetPermissions(upd));
-            mp.SessionType = _mapper.Map<SessionTypeDto>(_appRepository.GetSessiontype(upd.SessionTypeId));
 
-            return _serviceData.CreateResponse(mp, _localizer["UserUpdated"], 204);
+            return _serviceData.CreateResponse(mp, _localizer["UserUpdated"], 204, count: _userRepository.Get().Count());
         }
         catch (Exception e)
         {
@@ -208,7 +221,7 @@ public class UserService(IAppRepository appRepository, IUserRepository userRepos
             gt.DeletedAt = DateTime.UtcNow;
             var del = await _userRepository.Delete(gt);
             
-            return _serviceData.CreateResponse(del, _localizer["UserDeleted"]);
+            return _serviceData.CreateResponse(del, _localizer["UserDeleted"], count: _userRepository.Get().Count());
         }
         catch (Exception e)
         {

@@ -5,7 +5,6 @@ using easylogsAPI.Application.Interfaces.Services;
 using easylogsAPI.Domain.Entities;
 using easylogsAPI.Domain.Interfaces.Repositories;
 using easylogsAPI.Dto;
-using easylogsAPI.Models.Requests;
 using easylogsAPI.Models.Requests.Log;
 using easylogsAPI.Models.Responses;
 using easylogsAPI.Shared;
@@ -38,7 +37,7 @@ public class LogService(ILogRepository logRepository, IAppRepository appReposito
             });
             var mp = _mapper.Map<LogDto>(crt);
 
-            return _serviceData.CreateResponse(mp, $"log with trace: '{crt.Trace}' created successfully");
+            return _serviceData.CreateResponse(mp, $"log with trace: '{crt.Trace}' created successfully", count: _logRepository.Get().Count());
         }
         catch (Exception e)
         {
@@ -99,7 +98,7 @@ public class LogService(ILogRepository logRepository, IAppRepository appReposito
             
             var mp = _mapper.Map<List<LogDto>>(dt.Skip(request.Offset).Take(request.Limit).ToList());
 
-            return _serviceData.CreateResponse(mp);
+            return _serviceData.CreateResponse(mp, count: _logRepository.Get().Count());
         }
         catch (Exception e)
         {
@@ -124,7 +123,7 @@ public class LogService(ILogRepository logRepository, IAppRepository appReposito
             var upd = await _logRepository.Update(gt);
             var mp = _mapper.Map<LogDto>(upd);
 
-            return _serviceData.CreateResponse(mp, $"log with trace: '{gt.Trace}' updated successfully");
+            return _serviceData.CreateResponse(mp, $"log with trace: '{gt.Trace}' updated successfully", count: _logRepository.Get().Count());
         }
         catch (Exception e)
         {
@@ -142,7 +141,7 @@ public class LogService(ILogRepository logRepository, IAppRepository appReposito
             var del = await _logRepository.Delete(gt);
             if (!del) throw new Exception("log delete failed");
             
-            return _serviceData.CreateResponse(del, $"log with trace: '{gt.Trace}' deleted successfully");
+            return _serviceData.CreateResponse(del, $"log with trace: '{gt.Trace}' deleted successfully", count: _logRepository.Get().Count());
         }
         catch (Exception e)
         {

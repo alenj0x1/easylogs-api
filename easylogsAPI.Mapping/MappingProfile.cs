@@ -7,11 +7,10 @@ namespace easylogsAPI.Mapping;
 
 public class MappingProfile : Profile
 {
-    private readonly IAppRepository _appRepository;
-    
     public MappingProfile()
     {
-        CreateMap<Userapp, UserAppDto>().ReverseMap();
+        CreateMap<Userapp, UserAppMeDto>().ReverseMap();
+        CreateMap<Userapp, UserAppDefaultDto>().ReverseMap();
         CreateMap<Userapppermission, UserAppPermissionDto>().ReverseMap();
         CreateMap<Permission, PermissionDto>().ReverseMap();
         CreateMap<Sessiontype, SessionTypeDto>().ReverseMap();
