@@ -89,13 +89,51 @@
 			"name": "auth",
 			"item": [
 				{
+					"name": "create access token",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userAppId\": \"03c1790f-b609-42bf-a537-d47be7f9bdbc\",\r\n    \"expiration\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/accessToken/create",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"accessToken",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "login",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"username\": \"string\",\r\n  \"password\": \"string\"\r\n}",
+							"raw": "{\r\n  \"username\": \"su\",\r\n  \"password\": \"su1234\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -141,6 +179,36 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "delete access token",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/auth/accessToken/delete/taka",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"accessToken",
+								"delete",
+								"taka"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -161,10 +229,16 @@
 							]
 						},
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "ko-kr",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"username\": \"ta2\",\r\n  \"email\": \"ta2@example.com\",\r\n  \"password\": \"ta2\",\r\n  \"permissions\": [1]\r\n}",
+							"raw": "{\r\n  \"username\": \"acc\",\r\n  \"email\": \"acc@example.com\",\r\n  \"password\": \"acc\",\r\n  \"permissions\": [2]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -219,7 +293,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"offset\": 0,\r\n  \"limit\": 0,\r\n  \"userAppId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\r\n  \"username\": \"string\",\r\n  \"email\": \"string\",\r\n  \"startDate\": \"string\",\r\n  \"endDate\": \"string\"\r\n}",
+							"raw": "{\r\n  \"offset\": 0,\r\n  \"limit\": 0\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -313,21 +387,17 @@
 				{
 					"name": "create a log",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{userToken}}",
-									"type": "string"
-								}
-							]
-						},
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiIwM2MxNzkwZi1iNjA5LTQyYmYtYTUzNy1kNDdiZTdmOWJkYmMiLCJleHAiOjE3MzE2ODcxNTAsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTI5MiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NDIwMCJ9.zkoWUiDpG5oZbgQUMYUdZiO0MkEFnlbEh1qu0IGMCR8",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"message\": \"string\",\r\n  \"trace\": \"string\",\r\n  \"exception\": \"string\",\r\n  \"stackTrace\": \"string\",\r\n  \"type\": 0,\r\n  \"dataJson\": \"string\"\r\n}",
+							"raw": "{\r\n  \"message\": \"test\",\r\n  \"trace\": \"93843\",\r\n  \"dataJson\": \"{}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
