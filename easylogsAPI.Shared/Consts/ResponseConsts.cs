@@ -20,6 +20,6 @@ public static class ResponseConsts
     public const string ConfigurationMissingFirstUserEmail = "Missing First User email";
     
     // Authorization
-    public const string TokenNotFound = "Token not found";
-    public const string TokenExpired = "Token expired";
+    public const string TokenNotFound = "token_not_found";
+    public const string TokenExpired = "token_expired";
 }

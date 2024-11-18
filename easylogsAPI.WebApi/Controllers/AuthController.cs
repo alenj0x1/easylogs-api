@@ -33,6 +33,21 @@ public class AuthController(IAuthService authService, ILogger<IAuthController> l
         }
     }
 
+    [HttpGet("validateToken")]
+    [Authorize]
+    public BaseResponse<string> ValidateToken()
+    {
+        try
+        {
+            return _authService.ValidateToken();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e,  "{Class}:{Method}:{Message}", GetType().Name, MethodBase.GetCurrentMethod()?.Name, e.Message);
+            throw;
+        }
+    }
+
     [HttpDelete("accessToken/delete/{accessToken}")]
     [Permission("REMOVE_ACCESS_TOKEN")]
     [Authorize]

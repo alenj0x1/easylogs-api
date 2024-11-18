@@ -1,11 +1,13 @@
-﻿using easylogsAPI.Domain.Interfaces.Repositories;
+﻿using System.Reflection;
+using easylogsAPI.Domain.Interfaces.Repositories;
 using easylogsAPI.Shared.Consts;
 
 namespace easylogsAPI.WebApi.Middlewares;
 
-public class ApiKeyMiddleware(ITokenRepository tokenRepository) : IMiddleware
+public class ApiKeyMiddleware(ITokenRepository tokenRepository, ILogger<ApiKeyMiddleware> logger) : IMiddleware
 {
     private readonly ITokenRepository _tokenRepository = tokenRepository;
+    private ILogger<ApiKeyMiddleware> _logger = logger;
 
     public Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
@@ -23,7 +25,7 @@ public class ApiKeyMiddleware(ITokenRepository tokenRepository) : IMiddleware
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            _logger.LogError(e,  "{Class}:{Method}:{Message}", GetType().Name, MethodBase.GetCurrentMethod()?.Name, e.Message);
             throw;
         }
     }

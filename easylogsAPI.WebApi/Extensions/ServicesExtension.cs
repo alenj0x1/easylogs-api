@@ -104,9 +104,9 @@ public static class ServicesExtension
                     
                     var tkRefresh = tokenRepository.GetTokenRefresh(tkAccess.UserAppId); // <- define token refresh, for delete cases
                     
-                    if (DateTime.Now.CompareTo(tkAccess.Expiration) >= 0) // <- check expiration
+                    if (DateTime.UtcNow.CompareTo(tkAccess.Expiration) >= 0) // <- check expiration
                     {
-                        if (tkRefresh is not null)  await tokenRepository.DeleteTokenRefresh(tkRefresh);
+                        // if (tkRefresh is not null)  await tokenRepository.DeleteTokenRefresh(tkRefresh);
                         context.Fail(ResponseConsts.TokenExpired);
                     }
 
@@ -117,14 +117,7 @@ public static class ServicesExtension
                         context.Fail(ResponseConsts.TokenNotFound);
                     }
                 },
-                OnChallenge = async context =>
-                {
-                    if (!string.IsNullOrWhiteSpace(context.AuthenticateFailure?.Message))
-                    {
-                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                        await context.Response.WriteAsync(context.AuthenticateFailure.Message);
-                    }
-                }
+                OnChallenge = context => throw new Exception(context.AuthenticateFailure?.Message)
             };
         });
 

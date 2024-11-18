@@ -8,6 +8,7 @@ namespace easylogsAPI.Application.Interfaces.Services;
 public interface IAuthService
 {
     Task<BaseResponse<LoginAuthResponse>> CreateAccessToken(HttpContext httpContext, CreateAccessTokenAuthRequest request);
+    BaseResponse<string> ValidateToken();
     Task<BaseResponse<bool>> RemoveAccessToken(HttpContext httpContext, string accessToken);
     Task<BaseResponse<LoginAuthResponse>> Login(HttpContext httpContext, LoginAuthRequest request);
     Task<BaseResponse<LoginAuthResponse>> RenewAccess(HttpContext httpContext, RenewAccessAuthRequest request);

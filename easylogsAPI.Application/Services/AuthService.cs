@@ -49,6 +49,19 @@ public class AuthService : IAuthService
         }
     }
 
+    public BaseResponse<string> ValidateToken()
+    {
+        try
+        {
+            return _serviceData.CreateResponse("validation");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
     public async Task<BaseResponse<bool>> RemoveAccessToken(HttpContext httpContext, string accessToken)
     {
         try
