@@ -117,7 +117,11 @@ public static class ServicesExtension
                         context.Fail(ResponseConsts.TokenNotFound);
                     }
                 },
-                OnChallenge = context => throw new Exception(context.AuthenticateFailure?.Message)
+                OnChallenge = context => throw (context.AuthenticateFailure?.InnerException switch
+                {
+                    SecurityTokenMalformedException => new Exception(ResponseConsts.TokenNotFound),
+                    _ => new Exception(context.AuthenticateFailure?.Message)
+                })
             };
         });
 
