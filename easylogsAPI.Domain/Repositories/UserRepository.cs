@@ -65,12 +65,19 @@ public class UserRepository(EasyLogsDbContext easylogsDbContext, ILogger<IAppRep
             throw;
         }
     }
-
-    public List<Userapppermission> GetPermissions(Userapp userapp)
+    
+    public List<Permission> GetPermissions(Userapp userapp)
     {
         try
         {
-            return [.. _ctx.Userapppermissions.Where(usrp => usrp.UserAppId == userapp.UserAppId)];
+            var dt = _ctx.Userapppermissions
+                .Where(t => t.UserAppId == userapp.UserAppId)
+                .Join(_ctx.Permissions, 
+                    userapppermission => userapppermission.PermissionId, 
+                    permission => permission.PermissionId, 
+                    (usrapp, perm) => perm);
+            
+            return [.. dt];
         }
         catch (Exception e)
         {

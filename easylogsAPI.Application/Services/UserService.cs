@@ -56,8 +56,7 @@ public class UserService(IAppRepository appRepository, IUserRepository userRepos
             }
             
             var mp = _mapper.Map<UserAppDefaultDto>(crt);
-            
-            mp.Permissions = _mapper.Map<List<UserAppPermissionDto>>(_userRepository.GetPermissions(crt));
+            mp.Permissions = _mapper.Map<List<PermissionDto>>(_userRepository.GetPermissions(crt));
 
             return _serviceData.CreateResponse(mp, _localizer["UserCreated"], 201, count: _userRepository.Get().Count());
         }
@@ -75,7 +74,7 @@ public class UserService(IAppRepository appRepository, IUserRepository userRepos
             var cru = _userRepository.Get(Parser.ToGuid(userIdClaim.Value)) ?? throw new Exception(_localizer["IdentityValidationFailed"]);
             var mp = _mapper.Map<UserAppMeDto>(cru);
             
-            mp.Permissions = _mapper.Map<List<UserAppPermissionDto>>(_userRepository.GetPermissions(cru));
+            mp.Permissions = _mapper.Map<List<PermissionDto>>(_userRepository.GetPermissions(cru));
             mp.SessionType = _mapper.Map<SessionTypeDto>(_appRepository.GetSessiontype(cru.SessionTypeId));
 
             return _serviceData.CreateResponse(mp);
@@ -96,8 +95,8 @@ public class UserService(IAppRepository appRepository, IUserRepository userRepos
 
             if (dt is null) return _serviceData.CreateResponse(mp);
             
-            mp.Permissions = _mapper.Map<List<UserAppPermissionDto>>(_userRepository.GetPermissions(dt));
-
+            mp.Permissions = _mapper.Map<List<PermissionDto>>(_userRepository.GetPermissions(dt));
+            
             return _serviceData.CreateResponse(mp);
         }
         catch (Exception e)
@@ -146,7 +145,7 @@ public class UserService(IAppRepository appRepository, IUserRepository userRepos
             {
                 var mp = _mapper.Map<UserAppDefaultDto>(usr);
                 
-                mp.Permissions = _mapper.Map<List<UserAppPermissionDto>>(_userRepository.GetPermissions(usr));
+                mp.Permissions = _mapper.Map<List<PermissionDto>>(_userRepository.GetPermissions(usr));
                 
                 listMp.Add(mp);
             }
@@ -197,8 +196,8 @@ public class UserService(IAppRepository appRepository, IUserRepository userRepos
             var upd = await _userRepository.Update(gt);
             var mp = _mapper.Map<UserAppDefaultDto>(upd);
             
-            mp.Permissions = _mapper.Map<List<UserAppPermissionDto>>(_userRepository.GetPermissions(upd));
-
+            mp.Permissions = _mapper.Map<List<PermissionDto>>(_userRepository.GetPermissions(upd));
+            
             return _serviceData.CreateResponse(mp, _localizer["UserUpdated"], 204, count: _userRepository.Get().Count());
         }
         catch (Exception e)
