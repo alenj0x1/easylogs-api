@@ -52,6 +52,19 @@ public class TokenRepository(EasyLogsDbContext easylogsDbContext, ILogger<IToken
         }
     }
 
+    public IQueryable<Tokenaccess> GetTokenAccesses()
+    {
+        try
+        {
+            return _ctx.Tokenaccesses.Where(tkac => tkac.IsApiKey == true);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
     public Tokenaccess? GetTokenAccess(string value)
     {
         try

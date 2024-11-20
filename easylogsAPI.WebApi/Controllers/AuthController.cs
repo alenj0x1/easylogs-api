@@ -1,5 +1,7 @@
 ﻿using System.Reflection;
 using easylogsAPI.Application.Interfaces.Services;
+using easylogsAPI.Dto;
+using easylogsAPI.Models.Requests;
 using easylogsAPI.Models.Requests.Auth;
 using easylogsAPI.Models.Responses;
 using easylogsAPI.Models.Responses.Auth;
@@ -40,6 +42,22 @@ public class AuthController(IAuthService authService, ILogger<IAuthController> l
         try
         {
             return _authService.ValidateToken();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e,  "{Class}:{Method}:{Message}", GetType().Name, MethodBase.GetCurrentMethod()?.Name, e.Message);
+            throw;
+        }
+    }
+
+    [HttpPost("accessToken")]
+    [Permission("CREATE_ACCESS_TOKEN")]
+    [Authorize]
+    public BaseResponse<List<TokenAccessDto>> GetTokenAccesses(BaseRequest request)
+    {
+        try
+        {
+            return _authService.GetTokenAccesses(request);
         }
         catch (Exception e)
         {

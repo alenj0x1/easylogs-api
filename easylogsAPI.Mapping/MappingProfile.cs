@@ -16,5 +16,6 @@ public class MappingProfile : Profile
         CreateMap<Sessiontype, SessionTypeDto>().ReverseMap();
         CreateMap<Log, LogDto>().ReverseMap();
         CreateMap<Logtype, LogTypeDto>().ReverseMap();
+        CreateMap<Tokenaccess, TokenAccessDto>().ReverseMap();
     }
 }

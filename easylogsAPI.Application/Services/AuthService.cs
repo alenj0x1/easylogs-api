@@ -1,9 +1,12 @@
 ﻿using System.Reflection;
+using AutoMapper;
 using easylogsAPI.Application.Helpers;
 using easylogsAPI.Application.Interfaces.Helpers;
 using easylogsAPI.Application.Interfaces.Services;
 using easylogsAPI.Domain.Entities;
 using easylogsAPI.Domain.Interfaces.Repositories;
+using easylogsAPI.Dto;
+using easylogsAPI.Models.Requests;
 using easylogsAPI.Models.Requests.Auth;
 using easylogsAPI.Models.Responses;
 using easylogsAPI.Models.Responses.Auth;
@@ -22,15 +25,17 @@ public class AuthService : IAuthService
     private readonly IConfiguration _config;
     private readonly IToken _tokenHelper;
     private readonly ILogger<IAuthService> _logger;
+    private readonly IMapper _mappper;
     private readonly ServiceData _serviceData = new ();
 
-    public AuthService(IUserRepository userRepository, ITokenRepository tokenRepository, IConfiguration configuration, ILogger<IAuthService> logger)
+    public AuthService(IUserRepository userRepository, ITokenRepository tokenRepository, IConfiguration configuration, ILogger<IAuthService> logger, IMapper mapper)
     {
         _userRepository = userRepository;
         _tokenRepository = tokenRepository;
         _config = configuration;
         _tokenHelper = new Token(_config);
         _logger = logger;
+        _mappper = mapper;
     }
 
     public async Task<BaseResponse<LoginAuthResponse>> CreateAccessToken(HttpContext httpContext, CreateAccessTokenAuthRequest request)
@@ -54,6 +59,37 @@ public class AuthService : IAuthService
         try
         {
             return _serviceData.CreateResponse("validation");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    public BaseResponse<List<TokenAccessDto>> GetTokenAccesses(BaseRequest request)
+    {
+        try
+        {
+            var dt = _tokenRepository.GetTokenAccesses().Skip(request.Offset).Take(request.Limit).ToList();
+
+            List<TokenAccessDto> mp = [];
+            foreach (var tkad in dt)
+            {
+                var tkadMp = _mappper.Map<TokenAccessDto>(tkad);
+                var usr = _userRepository.Get(tkad.UserAppId);
+                
+                if (usr is null) continue;
+                
+                var perms = _userRepository.GetPermissions(usr);
+
+                tkadMp.UserApp = _mappper.Map<UserAppDefaultDto>(usr);
+                tkadMp.UserApp.Permissions = _mappper.Map<List<PermissionDto>>(perms);
+                
+                mp.Add(tkadMp);
+            }
+            
+            return _serviceData.CreateResponse(mp);
         }
         catch (Exception e)
         {
