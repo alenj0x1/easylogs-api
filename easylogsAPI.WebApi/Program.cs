@@ -18,7 +18,7 @@ app.UseCors(opt =>
 {
     opt.AllowAnyHeader();
     opt.AllowAnyMethod();
-    opt.AllowAnyOrigin();
+    opt.WithOrigins(builder.Configuration["Jwt:Audience"] ?? "http://localhost:4200");
 });
 
 // Configure the HTTP request pipeline.
@@ -29,8 +29,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-app.UseCors();
 
 app.UseMiddleware<ErrorHandlerMiddleware>();
 

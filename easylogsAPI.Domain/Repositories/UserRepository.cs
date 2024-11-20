@@ -90,7 +90,7 @@ public class UserRepository(EasyLogsDbContext easylogsDbContext, ILogger<IAppRep
     {
         try
         {
-            return _ctx.Userapps;
+            return _ctx.Userapps.Where(usra => usra.DeletedAt == null);
         }
         catch (Exception e)
         {

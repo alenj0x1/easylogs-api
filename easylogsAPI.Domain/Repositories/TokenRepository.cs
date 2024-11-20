@@ -150,13 +150,13 @@ public class TokenRepository(EasyLogsDbContext easylogsDbContext, ILogger<IToken
     {
         try
         {
-            _ctx.Tokenrefreshes.Remove(tokenrefresh);
-
             var tokenAccess = GetTokenAccess(tokenrefresh.UserAppId, tokenrefresh.IsApiKey); // <- verify token access created
             if (tokenAccess is not null)
             {
                 await DeleteTokenAccess(tokenAccess);
             }
+            
+            _ctx.Tokenrefreshes.Remove(tokenrefresh);
             
             await _ctx.SaveChangesAsync();
             return true;

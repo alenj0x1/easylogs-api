@@ -2,7 +2,9 @@
 using easylogsAPI.Application.Interfaces.Services;
 using easylogsAPI.Dto;
 using easylogsAPI.Models.Responses;
+using easylogsAPI.WebApi.Attributes;
 using easylogsAPI.WebApi.Interfaces.Controllers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace easylogsAPI.WebApi.Controllers;
@@ -14,6 +16,8 @@ public class AppController(IAppService appService, ILogger<AppController> logger
     private readonly IAppService _appService = appService;
     private readonly ILogger<AppController> _logger = logger;
 
+    [Permission("ADMINISTRATOR")]
+    [Authorize]
     [HttpGet("info")]
     public BaseResponse<AppInfoDto> GetAppInfo()
     {

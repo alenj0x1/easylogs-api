@@ -32,6 +32,7 @@ public class PermissionMiddleware(
                 if (usrPerms.Any(usrp => usrp.PermissionId == PermissionConsts.Administrator)) // <- administrator
                 {
                     await next(context);
+                    return;
                 }
                 
                 var perms = _appRepository.GetPermissions().Where(prm => attr.Values.Split(',').Contains(prm.Name)).ToList();
