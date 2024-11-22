@@ -12,7 +12,7 @@ public interface IAuthController
     Task<BaseResponse<LoginAuthResponse>> CreateAccessToken([FromBody] CreateAccessTokenAuthRequest request);
     BaseResponse<string> ValidateToken();
     BaseResponse<List<TokenAccessDto>> GetTokenAccesses([FromBody] BaseRequest request);
-    Task<BaseResponse<bool>> RemoveAccessToken(string accessToken);
+    Task<BaseResponse<bool>> RemoveAccessToken(int id);
     Task<BaseResponse<LoginAuthResponse>> Login([FromBody] LoginAuthRequest request);
     Task<BaseResponse<LoginAuthResponse>> RenewAccess([FromBody] RenewAccessAuthRequest request);
 }

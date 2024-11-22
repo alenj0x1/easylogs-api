@@ -84,7 +84,6 @@ public class LogService(ILogRepository logRepository, IAppRepository appReposito
                 dt = dt.Where(log => log.Type == gtType.LogTypeId);
             }
 
-
             if (request.StartDate is not null && request.EndDate is null) throw new Exception("start date and end date are required");
             if (request.EndDate is not null && request.StartDate is null) throw new Exception("end date and start date are required");
             

@@ -65,6 +65,19 @@ public class TokenRepository(EasyLogsDbContext easylogsDbContext, ILogger<IToken
         }
     }
 
+    public Tokenaccess? GetTokenAccess(int id)
+    {
+        try
+        {
+            return _ctx.Tokenaccesses.FirstOrDefault(tka => tka.TokenAccessId == id && tka.IsApiKey == true);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
     public Tokenaccess? GetTokenAccess(string value)
     {
         try
@@ -109,6 +122,19 @@ public class TokenRepository(EasyLogsDbContext easylogsDbContext, ILogger<IToken
         try
         {
             return _ctx.Tokenrefreshes.FirstOrDefault(tkrf => tkrf.Value == value);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e,  "{Class}:{Method}:{Message}", GetType().Name, MethodBase.GetCurrentMethod()?.Name, e.Message);
+            throw;
+        }
+    }
+
+    public Tokenrefresh? GetTokenRefresh(int id)
+    {
+        try
+        {
+            return _ctx.Tokenrefreshes.FirstOrDefault(tkrf => tkrf.TokenRefreshId == id);
         }
         catch (Exception e)
         {

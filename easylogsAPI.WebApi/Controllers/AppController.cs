@@ -15,8 +15,7 @@ public class AppController(IAppService appService, ILogger<AppController> logger
 {
     private readonly IAppService _appService = appService;
     private readonly ILogger<AppController> _logger = logger;
-
-    [Permission("ADMINISTRATOR")]
+    
     [Authorize]
     [HttpGet("info")]
     public BaseResponse<AppInfoDto> GetAppInfo()
@@ -32,6 +31,7 @@ public class AppController(IAppService appService, ILogger<AppController> logger
         }
     }
 
+    [Authorize]
     [HttpGet("permissions")]
     public BaseResponse<List<PermissionDto>> GetPermissions()
     {
@@ -46,6 +46,7 @@ public class AppController(IAppService appService, ILogger<AppController> logger
         }
     }
 
+    [Authorize]
     [HttpGet("permissions/{permissionId:int}")]
     public BaseResponse<PermissionDto> GetPermission(int permissionId)
     {
@@ -60,6 +61,7 @@ public class AppController(IAppService appService, ILogger<AppController> logger
         }
     }
 
+    [Authorize]
     [HttpGet("logTypes")]
     public BaseResponse<List<LogTypeDto>> GetLogtypes()
     {
@@ -74,6 +76,7 @@ public class AppController(IAppService appService, ILogger<AppController> logger
         }
     }
 
+    [Authorize]
     [HttpGet("logTypes/{logtypeId:int}")]
     public BaseResponse<LogTypeDto> GetLogtype(int logtypeId)
     {
@@ -88,6 +91,7 @@ public class AppController(IAppService appService, ILogger<AppController> logger
         }
     }
 
+    [Authorize]
     [HttpGet("sessionTypes")]
     public BaseResponse<List<SessionTypeDto>> GetSessionTypes()
     {
@@ -102,6 +106,7 @@ public class AppController(IAppService appService, ILogger<AppController> logger
         }
     }
 
+    [Authorize]
     [HttpGet("sessionTypes/{sessionTypeId:int}")]
     public BaseResponse<SessionTypeDto> GetSessionType(int sessionTypeId)
     {

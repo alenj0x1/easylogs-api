@@ -33,9 +33,9 @@ public static class Parser
     {
         try
         {
-            return DateTime.Parse(value, CultureInfo.InvariantCulture);
+            return DateTime.Parse(value, CultureInfo.InvariantCulture).ToUniversalTime();
         }
-        catch (Exception)
+        catch (Exception ex)
         {
             return null;
         }

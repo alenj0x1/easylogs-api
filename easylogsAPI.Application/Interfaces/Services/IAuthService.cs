@@ -12,7 +12,7 @@ public interface IAuthService
     Task<BaseResponse<LoginAuthResponse>> CreateAccessToken(HttpContext httpContext, CreateAccessTokenAuthRequest request);
     BaseResponse<string> ValidateToken();
     BaseResponse<List<TokenAccessDto>> GetTokenAccesses(BaseRequest request);
-    Task<BaseResponse<bool>> RemoveAccessToken(HttpContext httpContext, string accessToken);
+    Task<BaseResponse<bool>> RemoveAccessToken(int accessToken);
     Task<BaseResponse<LoginAuthResponse>> Login(HttpContext httpContext, LoginAuthRequest request);
     Task<BaseResponse<LoginAuthResponse>> RenewAccess(HttpContext httpContext, RenewAccessAuthRequest request);
 }

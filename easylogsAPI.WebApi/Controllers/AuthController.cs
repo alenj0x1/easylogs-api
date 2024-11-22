@@ -51,7 +51,6 @@ public class AuthController(IAuthService authService, ILogger<IAuthController> l
     }
 
     [HttpPost("accessToken")]
-    [Permission("CREATE_ACCESS_TOKEN")]
     [Authorize]
     public BaseResponse<List<TokenAccessDto>> GetTokenAccesses(BaseRequest request)
     {
@@ -66,14 +65,14 @@ public class AuthController(IAuthService authService, ILogger<IAuthController> l
         }
     }
 
-    [HttpDelete("accessToken/delete/{accessToken}")]
+    [HttpDelete("accessToken/delete/{id:int}")]
     [Permission("REMOVE_ACCESS_TOKEN")]
     [Authorize]
-    public async Task<BaseResponse<bool>> RemoveAccessToken(string accessToken)
+    public async Task<BaseResponse<bool>> RemoveAccessToken(int id)
     {
         try
         {
-            return await _authService.RemoveAccessToken(HttpContext, accessToken);
+            return await _authService.RemoveAccessToken(id);
         }
         catch (Exception e)
         {

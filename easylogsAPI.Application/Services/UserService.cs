@@ -119,12 +119,12 @@ public class UserService(IAppRepository appRepository, IUserRepository userRepos
             
             if (request.Username is not null)
             {
-                gt = gt.Where(usra => usra.Username == request.Username);
+                gt = gt.Where(usra => usra.Username.Contains(request.Username));
             }
             
             if (request.Email is not null)
             {
-                gt = gt.Where(usra => usra.Email == request.Email);
+                gt = gt.Where(usra => usra.Email.Contains(request.Email));
             }
 
             if (request.StartDate is not null && request.EndDate is null) throw new Exception(_localizer["RequiredArgumentStartDateAndEndDate"]);

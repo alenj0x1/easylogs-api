@@ -43,7 +43,7 @@ public class AuthService : IAuthService
         try
         {
             var usr = _userRepository.Get(request.UserAppId) ?? throw new Exception("user id not found");
-            var expiration = Parser.ToDateTime(request.Expiration ?? "") ?? DateTime.UtcNow.AddYears(99);
+            var expiration = Parser.ToDateTime(request.Expiration ?? "") ?? DateTime.MaxValue.ToUniversalTime();
             
             return _serviceData.CreateResponse(await CreateTokens(usr, expiration: expiration), "Token access created correctly");
         }
@@ -83,13 +83,14 @@ public class AuthService : IAuthService
                 
                 var perms = _userRepository.GetPermissions(usr);
 
+                tkadMp.Value =  "*******************" + tkadMp.Value[^10..];
                 tkadMp.UserApp = _mappper.Map<UserAppDefaultDto>(usr);
                 tkadMp.UserApp.Permissions = _mappper.Map<List<PermissionDto>>(perms);
                 
                 mp.Add(tkadMp);
             }
             
-            return _serviceData.CreateResponse(mp);
+            return _serviceData.CreateResponse(mp, count: _tokenRepository.GetTokenAccesses().Count(tka => tka.IsApiKey));
         }
         catch (Exception e)
         {
@@ -98,13 +99,14 @@ public class AuthService : IAuthService
         }
     }
 
-    public async Task<BaseResponse<bool>> RemoveAccessToken(HttpContext httpContext, string accessToken)
+    public async Task<BaseResponse<bool>> RemoveAccessToken(int id)
     {
         try
         {
-            var acc = _tokenRepository.GetTokenAccess(accessToken) ?? throw new Exception("Token access not found");
+            var acc = _tokenRepository.GetTokenAccess(id) ?? throw new Exception("Token access not found");
+            var tkr = _tokenRepository.GetTokenRefresh(acc.TokenRefreshId) ?? throw new Exception("Token access not found");
             
-            await _tokenRepository.DeleteTokenRefresh(acc.TokenRefresh);
+            await _tokenRepository.DeleteTokenRefresh(tkr);
             return _serviceData.CreateResponse(true, "Token access removed correctly");
         }
         catch (Exception e)
@@ -166,7 +168,7 @@ public class AuthService : IAuthService
                 Value = tkRefresh,
                 UserAppId = appuser.UserAppId,
                 Expiration = expiration ?? (appuser.SessionTypeId == SessionTypeConsts.Infinity ? null : DateTime.UtcNow.AddDays(appuser.SessionTime)), // <- setted :)
-                IsApiKey = expiration is not null,
+                IsApiKey = expiration.HasValue,
                 Ip = httpContext is null ? "ignore_validation" : httpContext.Connection.RemoteIpAddress?.ToString() ?? "ignore_validation"
             });
             
@@ -175,8 +177,8 @@ public class AuthService : IAuthService
                 TokenRefreshId = svTokenRefresh.TokenRefreshId, // <- refresh token ID
                 UserAppId = appuser.UserAppId,
                 Value = tkAccess.Value,
-                Expiration = tkExpiration,
-                IsApiKey = expiration is not null,
+                Expiration = expiration?.ToUniversalTime() ?? tkExpiration,
+                IsApiKey = expiration.HasValue,
                 Ip = httpContext is null ? "ignore_validation" : httpContext.Connection.RemoteIpAddress?.ToString() ?? "ignore_validation"
             });
             
