@@ -117,20 +117,20 @@ public class UserService(IAppRepository appRepository, IUserRepository userRepos
                 gt = gt.Where(usra => usra.UserAppId == request.UserAppId);
             }
             
-            if (request.Username is not null)
+            if (!string.IsNullOrWhiteSpace(request.Username))
             {
                 gt = gt.Where(usra => usra.Username.Contains(request.Username));
             }
             
-            if (request.Email is not null)
+            if (!string.IsNullOrWhiteSpace(request.Email))
             {
                 gt = gt.Where(usra => usra.Email.Contains(request.Email));
             }
 
-            if (request.StartDate is not null && request.EndDate is null) throw new Exception(_localizer["RequiredArgumentStartDateAndEndDate"]);
-            if (request.EndDate is not null && request.StartDate is null) throw new Exception(_localizer["RequiredArgumentEndDateAndStartDate"]);
+            if (!string.IsNullOrWhiteSpace(request.StartDate) && string.IsNullOrWhiteSpace(request.EndDate)) throw new Exception(_localizer["RequiredArgumentStartDateAndEndDate"]);
+            if (!string.IsNullOrWhiteSpace(request.EndDate) && string.IsNullOrWhiteSpace(request.StartDate)) throw new Exception(_localizer["RequiredArgumentEndDateAndStartDate"]);
             
-            if (request.StartDate is not null && request.EndDate is not null)
+            if (!string.IsNullOrWhiteSpace(request.StartDate) && !string.IsNullOrWhiteSpace(request.EndDate))
             {
                 var stdParsed = Parser.ToDateTime(request.StartDate) ?? throw new Exception(_localizer["IncorrectFormatStartDate"]);
                 var endParsed = Parser.ToDateTime(request.EndDate) ?? throw new Exception(_localizer["IncorrectFormatEndDate"]);

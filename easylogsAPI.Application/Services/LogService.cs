@@ -73,9 +73,9 @@ public class LogService(ILogRepository logRepository, IAppRepository appReposito
                 dt = dt.Where(log => log.LogId == request.LogId);
             }
             
-            if (request.Trace is not null)
+            if (!string.IsNullOrWhiteSpace(request.Trace))
             {
-                dt = dt.Where(log => log.Trace == request.Trace);
+                dt = dt.Where(log => log.Trace.Contains(request.Trace));
             }
             
             if (request.Type.HasValue)
@@ -84,15 +84,15 @@ public class LogService(ILogRepository logRepository, IAppRepository appReposito
                 dt = dt.Where(log => log.Type == gtType.LogTypeId);
             }
 
-            if (request.StartDate is not null && request.EndDate is null) throw new Exception("start date and end date are required");
-            if (request.EndDate is not null && request.StartDate is null) throw new Exception("end date and start date are required");
+            if (!string.IsNullOrWhiteSpace(request.StartDate) && string.IsNullOrWhiteSpace(request.EndDate)) throw new Exception("start date and end date are required");
+            if (!string.IsNullOrWhiteSpace(request.EndDate) && string.IsNullOrWhiteSpace(request.StartDate)) throw new Exception("end date and start date are required");
             
-            if (request.StartDate is not null && request.EndDate is not null)
+            if (!string.IsNullOrWhiteSpace(request.StartDate) && !string.IsNullOrWhiteSpace(request.EndDate))
             {
                 var stdParsed = Parser.ToDateTime(request.StartDate) ?? throw new Exception("start date is a incorrect format");
                 var endParsed = Parser.ToDateTime(request.EndDate) ?? throw new Exception("end date is a incorrect format");
                 
-                dt = dt.Where(log => log.CreatedAt >= stdParsed && log.CreatedAt <= endParsed);
+                dt = dt.Where(log => log.CreatedAt >= stdParsed.AddDays(-1) && log.CreatedAt <= endParsed.AddDays(1));
             }
             
             var mp = _mapper.Map<List<LogDto>>(dt.Skip(request.Offset).Take(request.Limit).ToList());
