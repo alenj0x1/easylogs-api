@@ -9,6 +9,10 @@ public partial class Logtype
 
     public string Name { get; set; } = null!;
 
+    public string ShowName { get; set; } = null!;
+
+    public string StyleClass { get; set; } = null!;
+
     public DateTime CreatedAt { get; set; }
 
     public DateTime UpdatedAt { get; set; }

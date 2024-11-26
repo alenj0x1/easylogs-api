@@ -56,17 +56,19 @@ create table UserAppPermission (
 create table LogType (
   log_type_id serial primary key not null,
   name varchar(100) not null,
+  show_name varchar(100) not null,
+  style_class varchar(255) not null,
   created_at timestamptz default(now()) not null,
   updated_at timestamptz default(now()) not null
 );
 
-insert into LogType (name)
+insert into LogType (name, show_name, style_class)
 values
-('debug'), 
-('information'), 
-('success'), 
-('warning'), 
-('error');
+('debug', 'Debug', 'bg-purple-400 text-purple-100 border-purple-300 border-2 px-3 py-1 rounded-full text-sm'), 
+('information', 'Información', 'bg-teal-400 text-teal-100 border-teal-300 border-2 px-3 py-1 rounded-full text-sm'), 
+('success', 'Correcto', 'bg-green-400 text-green-100 border-green-300 border-2 px-3 py-1 rounded-full text-sm'), 
+('warning', 'Precaución', 'bg-amber-400 text-amber-100 border-amber-300 border-2 px-3 py-1 rounded-full text-sm'), 
+('error', 'Error', 'bg-red-400 text-red-100 border-red-300 border-2 px-3 py-1 rounded-full text-sm');
 
 create table Log (
   log_id uuid primary key default(gen_random_uuid()),

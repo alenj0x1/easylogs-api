@@ -32,7 +32,9 @@ public partial class EasyLogsDbContext : DbContext
 
     public virtual DbSet<Userapppermission> Userapppermissions { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseNpgsql("Host=localhost;Database=easylogs;User Id=postgres;Port=5432;Password=vmt1234");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -80,6 +82,12 @@ public partial class EasyLogsDbContext : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(100)
                 .HasColumnName("name");
+            entity.Property(e => e.ShowName)
+                .HasMaxLength(100)
+                .HasColumnName("show_name");
+            entity.Property(e => e.StyleClass)
+                .HasMaxLength(255)
+                .HasColumnName("style_class");
             entity.Property(e => e.UpdatedAt)
                 .HasDefaultValueSql("now()")
                 .HasColumnName("updated_at");
