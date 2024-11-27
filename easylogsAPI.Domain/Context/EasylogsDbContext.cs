@@ -32,8 +32,6 @@ public partial class EasyLogsDbContext : DbContext
 
     public virtual DbSet<Userapppermission> Userapppermissions { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Log>(entity =>
