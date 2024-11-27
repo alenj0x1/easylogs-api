@@ -36,7 +36,7 @@ public class LogController(ILogService logService, ILogger<UserController> logge
     [HttpGet]
     [Permission("VIEW_LOGS")]
     [Authorize]
-    public BaseResponse<LogDto> Get(Guid id)
+    public BaseResponse<LogDto>  Get(Guid id)
     {
         try
         {
