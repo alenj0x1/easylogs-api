@@ -168,7 +168,7 @@ public class UserService(IAppRepository appRepository, IUserRepository userRepos
             
             if (request.Permissions is not null && request.Permissions.Contains(1) && adm is null) throw new Exception(_localizer["OnlyAnAdministratorCanGrantAdministratorPermissions"]);
             if (request.Permissions is not null && request.Permissions.Count == 0) throw new Exception(_localizer["RequiredArgumentPermissions"]);
-            if (request.Permissions is not null && !request.Permissions.Contains(1) && !_userPermissionRepository.Get().Any(usrp => usrp.PermissionId == 1)) throw new Exception("The instance needs at least one administrator to continue its correct operation.");
+            if (request.Permissions is not null && !request.Permissions.Contains(1) && _userPermissionRepository.Get().Count() == 1) throw new Exception("The instance needs at least one administrator to continue its correct operation.");
             if (request.Permissions is not null && _appRepository.GetPermissions().Count(prm => request.Permissions.Contains(prm.PermissionId)) < request.Permissions.Count) throw new Exception(_localizer["IncorrectArgumentPermission"]);
             
             var gt = _userRepository.Get(userappId) ?? throw new Exception(ResponseConsts.UserNotFound);
