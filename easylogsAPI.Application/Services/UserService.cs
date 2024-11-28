@@ -169,20 +169,32 @@ public class UserService(IAppRepository appRepository, IUserRepository userRepos
             if (request.Permissions is not null && request.Permissions.Contains(1) && adm is null) throw new Exception(_localizer["OnlyAnAdministratorCanGrantAdministratorPermissions"]);
             if (request.Permissions is not null && request.Permissions.Count == 0) throw new Exception(_localizer["RequiredArgumentPermissions"]);
             if (request.Permissions is not null && _appRepository.GetPermissions().Count(prm => request.Permissions.Contains(prm.PermissionId)) < request.Permissions.Count) throw new Exception(_localizer["IncorrectArgumentPermission"]);
-            if (request.Username is not null && _userRepository.Get(request.Username) is not null) throw new Exception(_localizer["UserUsernameRegistered"]);
-            if (request.Email is not null && _userRepository.GetByEmail(request.Email) is not null) throw new Exception(_localizer["UserEmailRegistered"]);
             
             var gt = _userRepository.Get(userappId) ?? throw new Exception(ResponseConsts.UserNotFound);
             
-            gt.Username = request.Username ?? gt.Username;
-            gt.Password = request.Password is not null ? Hasher.HashPassword(request.Password) : gt.Password;
-            gt.Email = request.Email ?? gt.Email;
+            if (!string.IsNullOrWhiteSpace(request.Username) && request.Username != gt.Username && _userRepository.Get(request.Username) is not null) throw new Exception(_localizer["UserUsernameRegistered"]);
+            if (!string.IsNullOrWhiteSpace(request.Email) && request.Email != gt.Email && _userRepository.GetByEmail(request.Email) is not null) throw new Exception(_localizer["UserEmailRegistered"]);
+            
+            // Default data
+            if (!string.IsNullOrWhiteSpace(request.Username)) gt.Username = request.Username ?? gt.Username;
+            if (!string.IsNullOrWhiteSpace(request.Email)) gt.Email = request.Email ?? gt.Email;
 
-            if (request.Permissions is not null)
+            // Change password
+            if (!string.IsNullOrWhiteSpace(request.PasswordNew) && string.IsNullOrWhiteSpace(request.PasswordCurrent)) throw new Exception("Password new is a required field");
+            if (!string.IsNullOrWhiteSpace(request.PasswordCurrent) && string.IsNullOrWhiteSpace(request.PasswordNew)) throw new Exception("Password current is a required field");
+
+            if (!string.IsNullOrWhiteSpace(request.PasswordNew) && !string.IsNullOrWhiteSpace(request.PasswordCurrent))
             {
-                var usrPerms = _userRepository.GetPermissions(gt);
+                if (!Hasher.ComparePassword(request.PasswordCurrent, gt.Password)) throw new Exception("Password current is incorrect");
+                gt.Password = Hasher.HashPassword(request.PasswordNew);
+            }
 
-                foreach (var prm in request.Permissions.Where(prm => usrPerms.All(usrp => usrp.PermissionId != prm)))
+            // Permissions
+            if (request.Permissions is not null && request.Permissions.Count > 0)
+            {
+                await _userRepository.ClearPermissions(gt);
+                
+                foreach (var prm in request.Permissions)
                 {
                     await _userPermissionRepository.Create(new Userapppermission
                     {

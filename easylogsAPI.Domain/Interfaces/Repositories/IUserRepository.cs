@@ -9,6 +9,7 @@ public interface IUserRepository
     Userapp? Get(string username);
     Userapp? GetByEmail(string email);
     List<Permission> GetPermissions(Userapp userapp);
+    Task ClearPermissions(Userapp userapp);
     IQueryable<Userapp> Get();
     Task<Userapp> Update(Userapp userapp);
     Task<bool> Delete(Userapp userapp);

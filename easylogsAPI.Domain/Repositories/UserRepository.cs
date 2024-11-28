@@ -86,6 +86,24 @@ public class UserRepository(EasyLogsDbContext easylogsDbContext, ILogger<IAppRep
         }
     }
 
+    public async Task ClearPermissions(Userapp userapp)
+    {
+        try
+        {
+            foreach (var usrp in _ctx.Userapppermissions.Where(usrp => usrp.UserAppId == userapp.UserAppId))
+            {
+                _ctx.Userapppermissions.Remove(usrp);
+            }
+
+            await _ctx.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e,  "{Class}:{Method}:{Message}", GetType().Name, MethodBase.GetCurrentMethod()?.Name, e.Message);
+            throw;
+        }
+    }
+
     public IQueryable<Userapp> Get()
     {
         try

@@ -9,6 +9,8 @@ public class UpdateUserRequest
     [MaxLength(255)]
     public string? Email { get; set; }
     [MaxLength(255)]
-    public string? Password { get; set; }
+    public string? PasswordCurrent { get; set; }
+    [MaxLength(255)]
+    public string? PasswordNew { get; set; }
     public List<int>? Permissions { get; set; }
 }
