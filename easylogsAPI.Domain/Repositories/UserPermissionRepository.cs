@@ -26,6 +26,19 @@ public class UserPermissionRepository(EasyLogsDbContext easylogsDbContext, ILogg
         }
     }
 
+    public IQueryable<Userapppermission> Get()
+    {
+        try
+        {
+            return _ctx.Userapppermissions;
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e,  "{Class}:{Method}:{Message}", GetType().Name, MethodBase.GetCurrentMethod()?.Name, e.Message);
+            throw;
+        }
+    }
+
     public async Task<Userapppermission> Update(Userapppermission userapppermission)
     {
         try
